@@ -172,21 +172,24 @@
 
       .game-hud {
         display: grid;
-        justify-items: center;
         gap: 10px;
         padding-top: 4px;
+        width: 100%;
       }
 
       .round-label {
         font-size: 16px;
         font-weight: 600;
         color: var(--text);
+        text-align: left;
+        padding-left: 4px;
       }
 
       .timer-wrap {
         position: relative;
         width: 64px;
         height: 64px;
+        justify-self: center;
       }
 
       .timer-svg {
@@ -499,8 +502,8 @@
         });
       };
 
-      const updateTimer = (payload = {}) => {
-        const showHud = Boolean(payload.showGameHud);
+      const updateTimer = (payload = {}, isResults = false) => {
+        const showHud = !isResults;
         gameHudEl.classList.toggle('hidden', !showHud);
         if (!showHud) return;
 
@@ -563,7 +566,7 @@
           : './assets/pause-circle.png';
         pauseBtn.setAttribute('aria-label', remoteState.isPaused ? 'Resume' : 'Pause');
 
-        updateTimer(payload);
+        updateTimer(payload, isResults);
       };
 
       const channel = client
@@ -573,8 +576,16 @@
         });
 
       channel.subscribe((status) => {
-        if (status === 'SUBSCRIBED') setStatus('Connected', true);
-        else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') setStatus('Disconnected', false);
+        if (status === 'SUBSCRIBED') {
+          setStatus('Connected', true);
+          channel.send({
+            type: 'broadcast',
+            event: 'score_remote_command',
+            payload: { action: 'request_state', source: 'remote_web' },
+          });
+          return;
+        }
+        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') setStatus('Disconnected', false);
         else if (status === 'CLOSED') setStatus('Offline', false);
         else setStatus(`Status: ${status}`, false);
       });
