@@ -12,6 +12,8 @@
         --surface: #1b1b1f;
         --text: #ffffff;
         --text-muted: #b3b3b3;
+        --timer-track: #2a2a2f;
+        --timer-progress: #2ecc71;
         --online: #22c55e;
         --offline: #e74c3c;
       }
@@ -25,15 +27,25 @@
         min-height: 100vh;
         background: var(--bg);
         color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 16px;
         padding-bottom: calc(16px + env(safe-area-inset-bottom));
       }
 
       .app {
+        width: 100%;
         max-width: 520px;
-        margin: 0 auto;
         display: grid;
         gap: 16px;
+      }
+
+      .app-logo {
+        width: 64px;
+        height: 64px;
+        display: block;
+        margin: 0 auto;
       }
 
       .status-row {
@@ -121,6 +133,41 @@
         transform: scale(0.96);
       }
 
+      .game-hud {
+        display: grid;
+        justify-items: center;
+        gap: 10px;
+        padding-top: 4px;
+      }
+
+      .round-label {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .timer-wrap {
+        position: relative;
+        width: 64px;
+        height: 64px;
+      }
+
+      .timer-svg {
+        display: block;
+      }
+
+      .timer-label {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+        pointer-events: none;
+      }
+
       .game-controls {
         display: flex;
         align-items: center;
@@ -174,18 +221,15 @@
         display: block;
       }
 
-      .play-again-btn:disabled {
-        opacity: 0.45;
-        cursor: not-allowed;
-      }
-
       .hidden {
-        display: none;
+        display: none !important;
       }
     </style>
   </head>
   <body>
     <div class="app">
+      <img src="./assets/icon.png" class="app-logo" alt="Triviauto" />
+
       <div class="status-row">
         <span class="status-label">Connection</span>
         <span id="status" class="status-value offline">Connecting...</span>
@@ -210,6 +254,27 @@
         </div>
       </div>
 
+      <div id="game-hud" class="game-hud hidden">
+        <div id="round-label" class="round-label">Round 1 / 20</div>
+        <div class="timer-wrap">
+          <svg id="timer-svg" class="timer-svg" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="29" stroke="var(--timer-track)" stroke-width="6" fill="transparent" />
+            <circle
+              id="timer-progress"
+              cx="32"
+              cy="32"
+              r="29"
+              stroke="var(--timer-progress)"
+              stroke-width="6"
+              fill="transparent"
+              stroke-linecap="round"
+              transform="rotate(-90 32 32)"
+            />
+          </svg>
+          <span id="timer-label" class="timer-label">0</span>
+        </div>
+      </div>
+
       <div class="game-controls">
         <button id="pause-btn" class="icon-btn" data-action="pause_or_resume" aria-label="Pause">
           <img id="pause-icon" src="./assets/pause-circle.png" alt="" />
@@ -222,8 +287,8 @@
         </button>
       </div>
 
-      <div class="play-again-wrap">
-        <button id="play-again" class="play-again-btn" data-action="play_again" disabled aria-label="Play again">
+      <div id="play-again-wrap" class="play-again-wrap hidden">
+        <button id="play-again" class="play-again-btn" data-action="play_again" aria-label="Play again">
           <img src="./assets/retry-button-hex.png" alt="Play again" />
         </button>
       </div>
@@ -242,12 +307,25 @@
       const p2NameEl = document.getElementById('p2-name');
       const p1ScoreEl = document.getElementById('p1-score');
       const p2ScoreEl = document.getElementById('p2-score');
+      const gameHudEl = document.getElementById('game-hud');
+      const roundLabelEl = document.getElementById('round-label');
+      const timerProgressEl = document.getElementById('timer-progress');
+      const timerLabelEl = document.getElementById('timer-label');
       const pauseBtn = document.getElementById('pause-btn');
       const pauseIcon = document.getElementById('pause-icon');
       const stopBtn = document.getElementById('stop-btn');
       const blockBtn = document.getElementById('block-btn');
+      const playAgainWrap = document.getElementById('play-again-wrap');
       const playAgainBtn = document.getElementById('play-again');
       const commandButtons = Array.from(document.querySelectorAll('[data-action]'));
+
+      const TIMER_SIZE = 64;
+      const TIMER_STROKE = 6;
+      const TIMER_RADIUS = (TIMER_SIZE - TIMER_STROKE) / 2;
+      const TIMER_CIRCUMFERENCE = 2 * Math.PI * TIMER_RADIUS;
+
+      timerProgressEl.setAttribute('stroke-dasharray', `${TIMER_CIRCUMFERENCE} ${TIMER_CIRCUMFERENCE}`);
+      timerProgressEl.setAttribute('stroke-dashoffset', String(TIMER_CIRCUMFERENCE));
 
       const params = new URLSearchParams(window.location.search);
       const session = normalizeSessionId(params.get('session'));
@@ -291,6 +369,29 @@
         });
       };
 
+      const updateTimer = (payload = {}) => {
+        const showHud = Boolean(payload.showGameHud);
+        gameHudEl.classList.toggle('hidden', !showHud);
+        if (!showHud) return;
+
+        const roundWord = payload.appLanguage === 'ro' ? 'Runda' : 'Round';
+        const currentRound = payload.currentRound ?? 1;
+        const roundsTotal = payload.roundsTotal ?? 1;
+        roundLabelEl.textContent = `${roundWord} ${currentRound} / ${roundsTotal}`;
+
+        const paused = Boolean(payload.isPaused);
+        const answerTime = payload.answerTimeSec || 10;
+        const countdown = payload.countdownSec ?? 0;
+        const progress =
+          countdown > 0 && answerTime > 0 ? Math.max(0, Math.min(1, countdown / answerTime)) : 0;
+
+        timerLabelEl.textContent = paused ? 'II' : String(countdown);
+        timerProgressEl.setAttribute(
+          'stroke-dashoffset',
+          String(TIMER_CIRCUMFERENCE * (1 - progress))
+        );
+      };
+
       const applyRemoteState = (payload = {}) => {
         p1NameEl.textContent = payload.player1Name || 'Player 1';
         p2NameEl.textContent = payload.player2Name || 'Player 2';
@@ -308,15 +409,14 @@
         pauseBtn.disabled = !remoteState.canPause;
         stopBtn.disabled = !remoteState.canStop;
         blockBtn.disabled = !remoteState.canBlockQuestion;
-        playAgainBtn.disabled = !remoteState.canPlayAgain;
+        playAgainWrap.classList.toggle('hidden', !remoteState.canPlayAgain);
 
         pauseIcon.src = remoteState.isPaused
           ? './assets/play-circle.png'
           : './assets/pause-circle.png';
-        pauseBtn.setAttribute(
-          'aria-label',
-          remoteState.isPaused ? 'Resume' : 'Pause'
-        );
+        pauseBtn.setAttribute('aria-label', remoteState.isPaused ? 'Resume' : 'Pause');
+
+        updateTimer(payload);
       };
 
       const channel = client
