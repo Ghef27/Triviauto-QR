@@ -206,11 +206,28 @@
       }
 
       .game-controls {
+        display: grid;
+        gap: 12px;
+        padding-top: 4px;
+        max-width: 280px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .control-row {
         display: flex;
         align-items: center;
-        justify-content: space-evenly;
-        gap: 8px;
-        padding-top: 4px;
+        gap: 14px;
+      }
+
+      .control-label {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .control-row:has(.icon-btn:disabled) .control-label {
+        opacity: 0.45;
       }
 
       .icon-btn {
@@ -351,15 +368,24 @@
         </div>
 
         <div id="game-controls" class="game-controls">
-          <button id="pause-btn" class="icon-btn" data-action="pause_or_resume" aria-label="Pause">
-            <img id="pause-icon" src="./assets/pause-circle.png" alt="" />
-          </button>
-          <button id="stop-btn" class="icon-btn" data-action="end_game" aria-label="Stop">
-            <img src="./assets/stop-circle.png" alt="" />
-          </button>
-          <button id="block-btn" class="icon-btn" data-action="block_question" aria-label="Block question">
-            <img src="./assets/cross-circle.png" alt="" />
-          </button>
+          <div class="control-row">
+            <button id="pause-btn" class="icon-btn" data-action="pause_or_resume" aria-label="Pause">
+              <img id="pause-icon" src="./assets/pause-circle.png" alt="" />
+            </button>
+            <span id="pause-label" class="control-label">Pauza</span>
+          </div>
+          <div class="control-row">
+            <button id="stop-btn" class="icon-btn" data-action="end_game" aria-label="Stop">
+              <img src="./assets/stop-circle.png" alt="" />
+            </button>
+            <span id="stop-label" class="control-label">Incheie jocul</span>
+          </div>
+          <div class="control-row">
+            <button id="block-btn" class="icon-btn" data-action="block_question" aria-label="Block question">
+              <img src="./assets/cross-circle.png" alt="" />
+            </button>
+            <span id="block-label" class="control-label">Blocheaza intrebarea</span>
+          </div>
         </div>
 
         <div id="play-again-wrap" class="play-again-wrap hidden">
@@ -398,8 +424,11 @@
       const timerLabelEl = document.getElementById('timer-label');
       const pauseBtn = document.getElementById('pause-btn');
       const pauseIcon = document.getElementById('pause-icon');
+      const pauseLabelEl = document.getElementById('pause-label');
       const stopBtn = document.getElementById('stop-btn');
+      const stopLabelEl = document.getElementById('stop-label');
       const blockBtn = document.getElementById('block-btn');
+      const blockLabelEl = document.getElementById('block-label');
       const playAgainWrap = document.getElementById('play-again-wrap');
       const playAgainTextEl = document.getElementById('play-again-text');
       const commandButtons = Array.from(document.querySelectorAll('[data-action]'));
@@ -434,6 +463,22 @@
         auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
       });
 
+      const CONTROL_LABELS = {
+        ro: {
+          pause: 'Pauza',
+          resume: 'Resume game',
+          endGame: 'Incheie jocul',
+          blockQuestion: 'Blocheaza intrebarea',
+        },
+        en: {
+          pause: 'Pause',
+          resume: 'Resume game',
+          endGame: 'End game',
+          blockQuestion: 'Block question',
+        },
+      };
+
+      const getControlLabels = (language) => CONTROL_LABELS[language] ?? CONTROL_LABELS.en;
       let lastTap = 0;
       let remoteState = {
         isPaused: false,
@@ -507,6 +552,11 @@
         pauseBtn.disabled = !remoteState.canPause;
         stopBtn.disabled = !remoteState.canStop;
         blockBtn.disabled = !remoteState.canBlockQuestion;
+
+        const labels = getControlLabels(payload.appLanguage);
+        pauseLabelEl.textContent = remoteState.isPaused ? labels.resume : labels.pause;
+        stopLabelEl.textContent = labels.endGame;
+        blockLabelEl.textContent = labels.blockQuestion;
 
         pauseIcon.src = remoteState.isPaused
           ? './assets/play-circle.png'
