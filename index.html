@@ -164,10 +164,25 @@
         transform: scale(0.96);
       }
 
+      .score-row.results-mode .score-card {
+        gap: 8px;
+      }
+
+      .win-badge-slot {
+        display: none;
+        min-height: calc(48px * (106 / 146) + 8px);
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .score-row.results-mode .win-badge-slot {
+        display: flex;
+      }
+
       .win-badge {
         width: 48px;
         height: calc(48px * (106 / 146));
-        margin-top: 4px;
       }
 
       .game-hud {
@@ -328,27 +343,6 @@
           <p id="final-scores-label" class="results-subtitle">Final Scores</p>
         </div>
 
-        <div class="score-row">
-          <div class="score-card">
-            <div id="p1-name" class="score-name">Player 1</div>
-            <div class="score-controls">
-              <button class="score-btn" data-action="dec_p1" aria-label="Player 1 minus">-</button>
-              <div id="p1-score" class="score-value">0</div>
-              <button class="score-btn" data-action="inc_p1" aria-label="Player 1 plus">+</button>
-            </div>
-            <img id="p1-win" class="win-badge hidden" src="./assets/win-badge.png" alt="Winner" />
-          </div>
-          <div class="score-card">
-            <div id="p2-name" class="score-name">Player 2</div>
-            <div class="score-controls">
-              <button class="score-btn" data-action="dec_p2" aria-label="Player 2 minus">-</button>
-              <div id="p2-score" class="score-value">0</div>
-              <button class="score-btn" data-action="inc_p2" aria-label="Player 2 plus">+</button>
-            </div>
-            <img id="p2-win" class="win-badge hidden" src="./assets/win-badge.png" alt="Winner" />
-          </div>
-        </div>
-
         <div id="game-hud" class="game-hud hidden">
           <div id="round-label" class="round-label">Round 1 / 20</div>
           <div class="timer-wrap">
@@ -367,6 +361,31 @@
               />
             </svg>
             <span id="timer-label" class="timer-label">0</span>
+          </div>
+        </div>
+
+        <div id="score-row" class="score-row">
+          <div class="score-card">
+            <div id="p1-name" class="score-name">Player 1</div>
+            <div class="score-controls">
+              <button class="score-btn" data-action="dec_p1" aria-label="Player 1 minus">-</button>
+              <div id="p1-score" class="score-value">0</div>
+              <button class="score-btn" data-action="inc_p1" aria-label="Player 1 plus">+</button>
+            </div>
+            <div class="win-badge-slot">
+              <img id="p1-win" class="win-badge hidden" src="./assets/win-badge.png" alt="Winner" />
+            </div>
+          </div>
+          <div class="score-card">
+            <div id="p2-name" class="score-name">Player 2</div>
+            <div class="score-controls">
+              <button class="score-btn" data-action="dec_p2" aria-label="Player 2 minus">-</button>
+              <div id="p2-score" class="score-value">0</div>
+              <button class="score-btn" data-action="inc_p2" aria-label="Player 2 plus">+</button>
+            </div>
+            <div class="win-badge-slot">
+              <img id="p2-win" class="win-badge hidden" src="./assets/win-badge.png" alt="Winner" />
+            </div>
           </div>
         </div>
 
@@ -412,6 +431,7 @@
 
       const statusEl = document.getElementById('status');
       const resultsHeadEl = document.getElementById('results-head');
+      const scoreRowEl = document.getElementById('score-row');
       const gameOverLabelEl = document.getElementById('game-over-label');
       const finalScoresLabelEl = document.getElementById('final-scores-label');
       const p1NameEl = document.getElementById('p1-name');
@@ -537,8 +557,10 @@
         finalScoresLabelEl.textContent = payload.finalScoresLabel || 'Final Scores';
         playAgainTextEl.textContent = payload.playAgainLabel || 'Play Again';
 
-        p1WinEl.classList.toggle('hidden', payload.winner !== 'p1');
-        p2WinEl.classList.toggle('hidden', payload.winner !== 'p2');
+        p1WinEl.classList.toggle('hidden', !isResults || payload.winner !== 'p1');
+        p2WinEl.classList.toggle('hidden', !isResults || payload.winner !== 'p2');
+
+        scoreRowEl.classList.toggle('results-mode', isResults);
 
         resultsHeadEl.classList.toggle('hidden', !isResults);
         gameControlsEl.classList.toggle('hidden', isResults);
