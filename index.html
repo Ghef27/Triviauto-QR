@@ -6,17 +6,21 @@
     <title>Triviauto Remote</title>
     <style>
       :root {
-        color-scheme: dark;
-        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-        --bg: #0c0c0e;
-        --surface: #1b1b1f;
-        --text: #ffffff;
-        --text-muted: #b3b3b3;
-        --subtitle: #c8c8c8;
-        --timer-track: #2a2a2f;
+        color-scheme: light;
+        font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+        --bg: #e4c49a;
+        --surface: #edd4ad;
+        --surface-elevated: #ddb882;
+        --text: #2f1608;
+        --text-secondary: #3a1c0c;
+        --text-muted: #6b3d22;
+        --subtitle: #3a1c0c;
+        --accent: #d46520;
+        --timer-track: #cfa060;
         --timer-progress: #2ecc71;
-        --online: #22c55e;
-        --offline: #e74c3c;
+        --online: #2f9e44;
+        --offline: #c0392b;
+        --shadow: 0 4px 10px rgba(58, 28, 12, 0.28);
       }
 
       * {
@@ -26,8 +30,13 @@
       body {
         margin: 0;
         min-height: 100vh;
-        background: var(--bg);
         color: var(--text);
+        background-color: var(--bg);
+        background-image: url('./assets/game_background1.png');
+        background-size: cover;
+        background-position: center top;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
       }
 
       .page {
@@ -41,14 +50,48 @@
 
       .app-header {
         flex-shrink: 0;
-        padding: 20px 16px 8px;
+        padding: 16px 16px 8px;
         text-align: center;
+        position: relative;
+      }
+
+      .logo-stage {
+        position: relative;
+        width: 96px;
+        height: 96px;
+        margin: 0 auto;
+        display: grid;
+        place-items: center;
+      }
+
+      .logo-glare {
+        position: absolute;
+        inset: -18px;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at center, rgba(255, 246, 200, 0.85) 0%, rgba(255, 224, 138, 0.35) 42%, rgba(255, 208, 96, 0) 70%),
+          repeating-conic-gradient(
+            from 0deg,
+            rgba(255, 236, 170, 0.42) 0deg 8deg,
+            transparent 8deg 20deg
+          );
+        animation: spin-glare 16s linear infinite;
+        pointer-events: none;
+      }
+
+      @keyframes spin-glare {
+        to {
+          transform: rotate(360deg);
+        }
       }
 
       .app-logo {
-        width: 80px;
-        height: 80px;
-        display: inline-block;
+        position: relative;
+        z-index: 1;
+        width: 88px;
+        height: 88px;
+        display: block;
+        filter: drop-shadow(0 3px 4px rgba(42, 18, 8, 0.35));
       }
 
       .app-main {
@@ -57,25 +100,38 @@
         flex-direction: column;
         justify-content: center;
         gap: 16px;
-        padding: 8px 16px 24px;
+        padding: 8px 16px 28px;
+      }
+
+      .panel {
+        background: var(--surface);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: var(--shadow);
       }
 
       .status-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 4px;
+        gap: 12px;
+        padding: 10px 14px;
+        background: var(--surface);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
       }
 
       .status-label {
         font-size: 14px;
-        color: var(--text-muted);
-        font-weight: 600;
+        color: var(--text-secondary);
+        font-weight: 800;
       }
 
       .status-value {
         font-size: 14px;
-        font-weight: 700;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
       }
 
       .status-value.online {
@@ -90,18 +146,30 @@
         text-align: center;
         display: grid;
         gap: 4px;
+        padding: 8px 8px 0;
       }
 
       .results-title {
         margin: 0;
-        font-size: 32px;
-        font-weight: 700;
-        color: var(--text);
+        font-size: 30px;
+        font-weight: 900;
+        color: #ffffff;
+        text-shadow:
+          -1px -1px 0 #000,
+          0 -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 0 0 #000,
+          1px 0 0 #000,
+          -1px 1px 0 #000,
+          0 1px 0 #000,
+          1px 1px 0 #000,
+          0 2px 2px rgba(0, 0, 0, 0.45);
       }
 
       .results-subtitle {
         margin: 0 0 4px;
         font-size: 16px;
+        font-weight: 800;
         color: var(--subtitle);
       }
 
@@ -113,16 +181,18 @@
 
       .score-card {
         background: var(--surface);
-        border-radius: 12px;
-        padding: 16px;
+        border-radius: 14px;
+        padding: 16px 12px;
         display: grid;
-        gap: 8px;
+        gap: 10px;
         justify-items: center;
+        box-shadow: var(--shadow);
       }
 
       .score-name {
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 800;
+        color: var(--text);
         text-align: center;
         max-width: 100%;
         overflow: hidden;
@@ -133,19 +203,34 @@
       .score-controls {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
       }
 
       .score-value {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0 10px;
+        display: grid;
+        place-items: center;
         font-size: 24px;
-        font-weight: 700;
-        min-width: 32px;
+        font-weight: 900;
+        color: #ffffff;
         text-align: center;
+        background: url('./assets/circle-button.png') center / contain no-repeat;
+        text-shadow:
+          -1px -1px 0 #000,
+          0 -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 0 0 #000,
+          1px 0 0 #000,
+          -1px 1px 0 #000,
+          0 1px 0 #000,
+          1px 1px 0 #000;
       }
 
       .score-btn {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         border: none;
         padding: 0;
         background: transparent;
@@ -153,11 +238,17 @@
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-        color: #3d2314;
-        font-size: 22px;
+        color: #ffffff;
+        font-size: 24px;
         font-weight: 900;
-        line-height: 40px;
+        line-height: 44px;
         cursor: pointer;
+        text-shadow:
+          -1px -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 1px 0 #000,
+          1px 1px 0 #000;
+        filter: drop-shadow(0 2px 2px rgba(42, 18, 8, 0.35));
       }
 
       .score-btn:active {
@@ -183,32 +274,37 @@
       .win-badge {
         width: 48px;
         height: calc(48px * (106 / 146));
+        filter: drop-shadow(0 3px 3px rgba(42, 18, 8, 0.35));
       }
 
       .game-hud {
         display: grid;
         gap: 10px;
-        padding-top: 4px;
+        padding: 14px 16px;
         width: 100%;
+        background: var(--surface);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
       }
 
       .round-label {
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 800;
         color: var(--text);
-        text-align: left;
-        padding-left: 4px;
+        text-align: center;
       }
 
       .timer-wrap {
         position: relative;
-        width: 64px;
-        height: 64px;
+        width: 72px;
+        height: 72px;
         justify-self: center;
       }
 
       .timer-svg {
         display: block;
+        width: 72px;
+        height: 72px;
       }
 
       .timer-label {
@@ -217,30 +313,37 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 18px;
-        font-weight: 700;
+        font-size: 20px;
+        font-weight: 900;
         color: var(--text);
         pointer-events: none;
       }
 
       .game-controls {
         display: grid;
-        gap: 12px;
-        padding-top: 4px;
-        max-width: 280px;
-        margin: 0 auto;
+        gap: 10px;
+        padding: 14px 16px;
         width: 100%;
+        background: var(--surface);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
       }
 
       .control-row {
         display: flex;
         align-items: center;
         gap: 14px;
+        padding: 4px 0;
+      }
+
+      .control-row + .control-row {
+        border-top: 1px solid rgba(90, 52, 28, 0.22);
+        padding-top: 12px;
       }
 
       .control-label {
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 800;
         color: var(--text);
       }
 
@@ -255,6 +358,8 @@
         padding: 0;
         background: transparent;
         cursor: pointer;
+        flex-shrink: 0;
+        filter: drop-shadow(0 3px 3px rgba(42, 18, 8, 0.3));
       }
 
       .icon-btn img {
@@ -270,12 +375,13 @@
       .icon-btn:disabled {
         opacity: 0.45;
         cursor: not-allowed;
+        filter: none;
       }
 
       .play-again-wrap {
         display: flex;
         justify-content: center;
-        padding-top: 8px;
+        padding-top: 4px;
       }
 
       .play-again-btn {
@@ -284,6 +390,7 @@
         width: 220px;
         background: transparent;
         cursor: pointer;
+        filter: drop-shadow(0 4px 5px rgba(42, 18, 8, 0.35));
       }
 
       .play-again-bg {
@@ -329,7 +436,10 @@
   <body>
     <div class="page">
       <header class="app-header">
-        <img src="./assets/icon.png" class="app-logo" alt="Triviauto" />
+        <div class="logo-stage">
+          <div class="logo-glare" aria-hidden="true"></div>
+          <img src="./assets/icon.png" class="app-logo" alt="Triviauto" />
+        </div>
       </header>
 
       <main class="app-main">
@@ -346,18 +456,18 @@
         <div id="game-hud" class="game-hud hidden">
           <div id="round-label" class="round-label">Round 1 / 20</div>
           <div class="timer-wrap">
-            <svg id="timer-svg" class="timer-svg" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
-              <circle cx="32" cy="32" r="29" stroke="var(--timer-track)" stroke-width="6" fill="transparent" />
+            <svg id="timer-svg" class="timer-svg" width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+              <circle cx="36" cy="36" r="32" stroke="var(--timer-track)" stroke-width="6" fill="transparent" />
               <circle
                 id="timer-progress"
-                cx="32"
-                cy="32"
-                r="29"
+                cx="36"
+                cy="36"
+                r="32"
                 stroke="var(--timer-progress)"
                 stroke-width="6"
                 fill="transparent"
                 stroke-linecap="round"
-                transform="rotate(-90 32 32)"
+                transform="rotate(-90 36 36)"
               />
             </svg>
             <span id="timer-label" class="timer-label">0</span>
@@ -456,7 +566,7 @@
       const playAgainTextEl = document.getElementById('play-again-text');
       const commandButtons = Array.from(document.querySelectorAll('[data-action]'));
 
-      const TIMER_SIZE = 64;
+      const TIMER_SIZE = 72;
       const TIMER_STROKE = 6;
       const TIMER_RADIUS = (TIMER_SIZE - TIMER_STROKE) / 2;
       const TIMER_CIRCUMFERENCE = 2 * Math.PI * TIMER_RADIUS;
