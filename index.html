@@ -539,19 +539,29 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
-        padding: 14px 16px;
         width: 100%;
-        background: var(--surface);
-        border-radius: 14px;
-        box-shadow: var(--shadow);
+      }
+
+      .word-game-keep {
+        display: grid;
+        gap: 14px;
+        padding: 8px 0 4px;
+      }
+
+      .word-game-keep-ask {
+        font-size: 18px;
+        font-weight: 900;
+        text-align: center;
+        color: var(--text);
+        line-height: 1.3;
       }
 
       .fazauto-btn {
         border: none;
         border-radius: 12px;
-        min-height: 64px;
+        min-height: 72px;
         padding: 12px 10px;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 900;
         color: #ffffff;
         cursor: pointer;
@@ -561,14 +571,15 @@
           -1px 1px 0 #000,
           1px 1px 0 #000;
         box-shadow: var(--shadow);
+        background: var(--surface-elevated) url('./assets/startgame-button.png') center / 100% 100% no-repeat;
       }
 
       .fazauto-btn.foul {
-        background: #c0392b;
+        background-color: #c0392b;
       }
 
       .fazauto-btn.ok {
-        background: #2f9e44;
+        background-color: #2f9e44;
       }
 
       .fazauto-btn:disabled {
@@ -664,6 +675,13 @@
               </div>
               <div id="word-game-awaiting" class="turn-hint"></div>
             </div>
+            <div id="word-game-keep" class="word-game-keep hidden">
+              <div id="keep-category-ask" class="word-game-keep-ask">Keep this category?</div>
+              <div id="fazauto-actions" class="fazauto-actions">
+                <button id="keep-yes-btn" class="fazauto-btn ok" type="button">Yes — same category</button>
+                <button id="keep-no-btn" class="fazauto-btn foul" type="button">No — new category</button>
+              </div>
+            </div>
             <div id="turn-hint" class="turn-hint hidden"></div>
           </div>
 
@@ -710,12 +728,6 @@
               <img id="p2-win" class="win-badge hidden" src="./assets/win-badge.png" alt="Winner" />
             </div>
           </div>
-        </div>
-
-        <div id="fazauto-actions" class="fazauto-actions hidden">
-          <div id="keep-category-ask" class="letter-picker-title" style="grid-column: 1 / -1;">Keep this category?</div>
-          <button id="keep-yes-btn" class="fazauto-btn ok" type="button">Yes — same category</button>
-          <button id="keep-no-btn" class="fazauto-btn foul" type="button">No — new category</button>
         </div>
 
         <div id="game-controls" class="game-controls">
@@ -802,6 +814,7 @@
       const playAgainWrap = document.getElementById('play-again-wrap');
       const playAgainTextEl = document.getElementById('play-again-text');
       const fazautoActionsEl = document.getElementById('fazauto-actions');
+      const wordGameKeepEl = document.getElementById('word-game-keep');
       const keepCategoryAskEl = document.getElementById('keep-category-ask');
       const keepYesBtn = document.getElementById('keep-yes-btn');
       const keepNoBtn = document.getElementById('keep-no-btn');
@@ -963,6 +976,7 @@
         wordGamePanelEl.classList.toggle('hidden', !isNoTimerWordGame);
         if (isNoTimerWordGame) {
           if (isSuitcase) {
+            wordGameKeepEl.classList.add('hidden');
             wordGameHeaderLabelEl.textContent = copy.container;
             wordGameHeaderValueEl.textContent = '';
             const prompt = buildSuitcasePrompt(payload, copy.join);
@@ -990,14 +1004,18 @@
             if (isKeep) {
               wordGameLetterBlockEl.classList.add('hidden');
               wordGameMetaEl.classList.add('hidden');
-              turnHintEl.classList.remove('hidden');
-              turnHintEl.textContent =
-                payload.keepCategoryAskLabel || 'Keep this category?';
+              wordGameKeepEl.classList.remove('hidden');
+              turnHintEl.classList.add('hidden');
+              turnHintEl.textContent = '';
+              keepCategoryAskEl.textContent =
+                payload.keepCategoryAskLabel ||
+                (lang === 'ro' ? 'Păstrăm categoria?' : 'Keep this category?');
             } else {
               wordGameLetterBlockEl.classList.remove('hidden');
               wordGameLetterCaptionEl.textContent = copy.letter;
               wordGameLetterEl.textContent = letter || '—';
               wordGameMetaEl.classList.remove('hidden');
+              wordGameKeepEl.classList.add('hidden');
               wordGameLetterInlineRowEl.classList.add('hidden');
               wordGameTurnLabelEl.textContent = copy.starts;
               wordGameTurnValueEl.textContent = turnName || '—';
@@ -1010,6 +1028,9 @@
               turnHintEl.textContent = '';
             }
           }
+        } else {
+          wordGameKeepEl.classList.add('hidden');
+        }
         }
 
         const paused = Boolean(payload.isPaused);
@@ -1087,6 +1108,10 @@
         });
 
         fazautoActionsEl.classList.toggle('hidden', !isFazAuto || isResults || !canKeep);
+        wordGameKeepEl.classList.toggle(
+          'hidden',
+          !isFazAuto || isResults || !canKeep || payload.fazautoPhase !== 'keep_category'
+        );
         keepCategoryAskEl.textContent =
           payload.keepCategoryAskLabel || 'Keep this category?';
         keepYesBtn.textContent = payload.keepCategoryYesLabel || 'Yes — same category';
