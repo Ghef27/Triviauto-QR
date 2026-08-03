@@ -708,6 +708,12 @@
         width: 100%;
       }
 
+      .fazauto-actions.single-action {
+        grid-template-columns: 1fr;
+        max-width: 280px;
+        margin: 0 auto;
+      }
+
       .word-game-keep {
         display: grid;
         gap: 14px;
@@ -746,6 +752,14 @@
 
       .fazauto-btn.ok {
         background-color: #2f9e44;
+      }
+
+      .fazauto-btn.medium-cta {
+        min-height: 56px;
+        font-size: 22px;
+        background: transparent url('./assets/difficulty_medium.png') center / 100% 100% no-repeat;
+        box-shadow: none;
+        border-radius: 0;
       }
 
       .fazauto-btn:disabled {
@@ -1020,6 +1034,10 @@
           src: './assets/icon_ceinvapeinvaliza.png',
           alt: 'Ce încape în valiză?',
         },
+        'what-would-they-say': {
+          src: './assets/icon_cearface.png',
+          alt: 'Ce ar face?',
+        },
         default: { src: './assets/icon_playauto.png', alt: 'PlayAuto' },
       };
 
@@ -1149,17 +1167,34 @@
         const gameId = payload.gameId || 'trivia';
         const isFazAuto = gameId === 'last-letter';
         const isSuitcase = gameId === 'ce-incape-in-valiza';
+        const isWwts = gameId === 'what-would-they-say';
         const isNoTimerWordGame = isFazAuto || isSuitcase;
         const phase = payload.fazautoPhase || null;
         const isKeep = isFazAuto && phase === 'keep_category';
+        const isNextQuestion = isWwts && phase === 'next_question';
         const letter = payload.letterLabel || '';
         const turnName = payload.turnPlayerName || '';
 
         roundLabelEl.textContent = `${roundWord} ${currentRound} / ${roundsTotal}`;
         setAppLogo(isResults ? 'default' : gameId);
 
-        wordGamePanelEl.classList.toggle('hidden', !isNoTimerWordGame);
-        if (isNoTimerWordGame) {
+        wordGamePanelEl.classList.toggle('hidden', !(isNoTimerWordGame || isNextQuestion));
+        if (isNextQuestion) {
+          wordGameHeaderLabelEl.textContent = lang === 'ro' ? 'Întrebare' : 'Question';
+          wordGameHeaderValueEl.textContent = '';
+          wordGamePromptEl.textContent = payload.questionLabel || '';
+          wordGamePromptEl.classList.toggle('hidden', !payload.questionLabel);
+          wordGameLetterBlockEl.classList.add('hidden');
+          wordGameMetaEl.classList.add('hidden');
+          wordGameLetterInlineRowEl.classList.add('hidden');
+          wordGameKeepEl.classList.remove('hidden');
+          turnHintEl.classList.add('hidden');
+          turnHintEl.textContent = '';
+          keepCategoryAskEl.textContent =
+            payload.keepCategoryAskLabel ||
+            (lang === 'ro' ? 'Trecem la următoarea?' : 'Next question?');
+          // Fall through to trivia-style countdown ring (usually 0 between questions)
+        } else if (isNoTimerWordGame) {
           if (isSuitcase) {
             wordGameKeepEl.classList.add('hidden');
             wordGameHeaderLabelEl.textContent = copy.container;
@@ -1311,6 +1346,7 @@
         const isResults =
           !isPickGame && (payload.screen === 'results' || Boolean(payload.canPlayAgain));
         const isFazAuto = payload.gameId === 'last-letter';
+        const isWwts = payload.gameId === 'what-would-they-say';
         const isNoTimerWordGame =
           payload.gameId === 'last-letter' || payload.gameId === 'ce-incape-in-valiza';
         const canKeep = Boolean(payload.canKeepCategory);
@@ -1366,7 +1402,7 @@
         blockBtn.disabled = !remoteState.canBlockQuestion;
         if (blockRow) blockRow.classList.toggle('hidden', isResults || isPickGame);
 
-        const showScoreControls = remoteState.scoreIncDec && !isResults && !isPickGame && !canKeep;
+        const showScoreControls = remoteState.scoreIncDec && !isResults && !isPickGame;
         scoreBtns.forEach((btn) => {
           btn.classList.toggle('hidden', !showScoreControls);
           btn.disabled = !showScoreControls;
@@ -1374,15 +1410,16 @@
 
         fazautoActionsEl.classList.toggle(
           'hidden',
-          !isFazAuto || isResults || isPickGame || !canKeep
+          (!isFazAuto && !isWwts) || isResults || isPickGame || !canKeep
         );
         wordGameKeepEl.classList.toggle(
           'hidden',
-          !isFazAuto ||
+          (!isFazAuto && !isWwts) ||
             isResults ||
             isPickGame ||
             !canKeep ||
-            payload.fazautoPhase !== 'keep_category'
+            (payload.fazautoPhase !== 'keep_category' &&
+              payload.fazautoPhase !== 'next_question')
         );
         keepCategoryAskEl.textContent =
           payload.keepCategoryAskLabel || 'Keep this category?';
@@ -1390,6 +1427,9 @@
         keepNoBtn.textContent = payload.keepCategoryNoLabel || 'No — new category';
         keepYesBtn.disabled = !canKeep;
         keepNoBtn.disabled = !canKeep;
+        keepNoBtn.classList.toggle('hidden', isWwts);
+        fazautoActionsEl.classList.toggle('single-action', isWwts);
+        keepYesBtn.classList.toggle('medium-cta', isWwts);
 
         const labels = getControlLabels(payload.appLanguage);
         pauseLabelEl.textContent = remoteState.isPaused ? labels.resume : labels.pause;
