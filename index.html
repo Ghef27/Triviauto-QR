@@ -519,6 +519,10 @@
         filter: drop-shadow(0 4px 5px rgba(42, 18, 8, 0.35));
       }
 
+      .change-game-btn {
+        width: 300px;
+      }
+
       .play-again-bg,
       .change-game-bg {
         position: relative;
@@ -531,7 +535,7 @@
       }
 
       .change-game-bg {
-        background-image: url('./assets/difficulty_medium.png');
+        width: 300px;
       }
 
       .play-again-text,
@@ -553,11 +557,11 @@
       }
 
       .change-game-text {
-        padding: 0 12px;
         font-size: 15px;
       }
 
-      .play-again-icon {
+      .play-again-icon,
+      .change-game-icon {
         position: absolute;
         right: -10px;
         width: 50px;
@@ -1035,6 +1039,7 @@
           <button id="change-game" class="change-game-btn" type="button" aria-label="Change game">
             <span class="change-game-bg">
               <span id="change-game-text" class="change-game-text">Change game</span>
+              <img class="change-game-icon" src="./assets/home-button-hex.png" alt="" />
             </span>
           </button>
         </div>
@@ -1698,7 +1703,7 @@
 
       changeGameBtn.addEventListener('click', () => {
         if (!remoteState.canChangeGame) return;
-        sendCommand('back_to_hub');
+        sendCommand('open_game_picker');
         if (navigator.vibrate) navigator.vibrate(20);
       });
 
