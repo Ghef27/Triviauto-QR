@@ -238,13 +238,19 @@
       }
 
       .memoria-panel {
-        display: grid;
-        gap: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
         margin-top: 2px;
+        min-height: 0;
       }
 
       .memoria-panel.hidden {
         display: none;
+      }
+
+      .memoria-panel.scoring {
+        gap: 6px;
       }
 
       .memoria-hint {
@@ -252,47 +258,154 @@
         font-weight: 800;
         text-align: center;
         color: var(--text);
-        line-height: 1.3;
+        line-height: 1.25;
+        flex-shrink: 0;
+      }
+
+      .memoria-words-caption {
+        font-size: 14px;
+        font-weight: 800;
+        text-align: center;
+        color: var(--text-muted);
+        flex-shrink: 0;
+      }
+
+      .memoria-words-caption.hidden {
+        display: none;
       }
 
       .memoria-words {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 2px 8px;
-        text-align: left;
-        font-size: 13px;
+        gap: 8px;
+        text-align: center;
+        font-size: 16px;
         font-weight: 700;
         color: var(--text);
-        max-height: 42vh;
+        flex: 1 1 auto;
+        min-height: 120px;
+        max-height: min(38vh, 280px);
         overflow: auto;
-        line-height: 1.25;
+        line-height: 1.35;
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+        padding: 4px 2px;
       }
 
       .memoria-words.dense {
-        font-size: 11px;
-        gap: 1px 6px;
-        max-height: 46vh;
+        font-size: 13px;
+        max-height: min(42vh, 300px);
+      }
+
+      .memoria-word-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        min-width: 0;
+        gap: 2px;
+      }
+
+      .memoria-words .memoria-word {
+        width: 100%;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .memoria-score-footer {
+        display: grid;
+        gap: 6px;
+        justify-items: center;
+        flex-shrink: 0;
+        padding-top: 2px;
+      }
+
+      .memoria-score-footer.hidden {
+        display: none;
       }
 
       .memoria-stepper {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        gap: 10px;
+        display: flex;
+        flex-direction: row;
         align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+      }
+
+      .memoria-stepper-btn {
+        width: 42px;
+        height: 36px;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        color: #fff;
+        font-size: 22px;
+        font-weight: 900;
+        line-height: 1;
+        text-shadow:
+          -1px -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 1px 0 #000,
+          1px 1px 0 #000;
+        box-shadow: none;
+        border-radius: 0;
+        flex-shrink: 0;
+      }
+
+      .memoria-stepper-btn.hard {
+        background: transparent url('./assets/difficulty_hard.png') center / 100% 100% no-repeat;
+      }
+
+      .memoria-stepper-btn.medium {
+        background: transparent url('./assets/difficulty_medium.png') center / 100% 100% no-repeat;
+      }
+
+      .memoria-stepper-btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .memoria-stepper-btn:active:not(:disabled) {
+        transform: scale(0.96);
+      }
+
+      .memoria-stepper-value-wrap {
+        min-width: 64px;
+        text-align: center;
       }
 
       .memoria-stepper-value {
         text-align: center;
-        font-size: 28px;
+        font-size: 20px;
         font-weight: 900;
         color: var(--text);
+        line-height: 1.1;
       }
 
       .memoria-stepper-label {
         text-align: center;
-        font-size: 12px;
+        font-size: 11px;
+        line-height: 13px;
         font-weight: 700;
-        color: var(--muted, #9aa0a6);
+        color: var(--text-muted);
+      }
+
+      .memoria-confirm-row {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .memoria-confirm-btn {
+        width: 148px;
+        min-height: 0;
+        height: auto;
+        aspect-ratio: 507 / 141;
+        font-size: 16px;
+        padding: 0;
       }
 
       .drunkard-bridge {
@@ -346,6 +459,12 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
+      }
+
+      .drunkard-actions .fazauto-btn {
+        min-height: 48px;
+        font-size: 16px;
+        padding: 8px 6px;
       }
 
       .drunkard-actions.hidden {
@@ -945,35 +1064,38 @@
 
       .pick-players-ribbon {
         position: absolute;
-        top: -10px;
+        top: -14px;
         left: 50%;
         transform: translateX(-50%);
-        width: min(46%, 210px);
+        width: min(52%, 230px);
         aspect-ratio: 790 / 172;
         background: url('./assets/ribbon-banner-red.png') center / 100% 100% no-repeat;
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         justify-content: center;
-        padding-top: 18%;
+        padding: 0 14% 8%;
         box-sizing: border-box;
         z-index: 2;
+        pointer-events: none;
+        filter: drop-shadow(0 3px 3px rgba(42, 18, 8, 0.35));
       }
 
       .pick-players-ribbon-text {
         color: #fff;
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 900;
+        letter-spacing: 0.4px;
         line-height: 1;
-        transform: translateY(-2px);
+        transform: translateY(-10%);
         text-shadow:
-          -1px -1px 0 #000,
-          0 -1px 0 #000,
-          1px -1px 0 #000,
-          -1px 0 0 #000,
-          1px 0 0 #000,
-          -1px 1px 0 #000,
-          0 1px 0 #000,
-          1px 1px 0 #000,
+          -1.5px -1.5px 0 #000,
+          0 -1.5px 0 #000,
+          1.5px -1.5px 0 #000,
+          -1.5px 0 0 #000,
+          1.5px 0 0 #000,
+          -1.5px 1.5px 0 #000,
+          0 1.5px 0 #000,
+          1.5px 1.5px 0 #000,
           0 2px 2px rgba(0, 0, 0, 0.45);
       }
 
@@ -1992,26 +2114,28 @@
                 </div>
               </div>
               <div id="drunkard-actions" class="drunkard-actions hidden">
-                <button id="drunkard-next-btn" class="fazauto-btn ok" type="button">Next</button>
-                <button id="drunkard-skip-btn" class="fazauto-btn foul" type="button">Skip</button>
+                <button id="drunkard-next-btn" class="fazauto-btn medium-cta" type="button">Next</button>
+                <button id="drunkard-skip-btn" class="fazauto-btn hard-cta" type="button">Skip</button>
               </div>
             </div>
             <div id="memoria-panel" class="memoria-panel hidden">
               <div id="memoria-hint" class="memoria-hint"></div>
-              <div id="memoria-words-caption" class="drunkard-bridge-caption hidden"></div>
+              <div id="memoria-words-caption" class="memoria-words-caption hidden"></div>
               <div id="memoria-words" class="memoria-words hidden"></div>
-              <div id="memoria-stepper" class="memoria-stepper hidden">
-                <button id="memoria-dec-btn" class="fazauto-btn foul" type="button">−</button>
-                <div>
-                  <div id="memoria-stepper-value" class="memoria-stepper-value">0/5</div>
-                  <div id="memoria-stepper-label" class="memoria-stepper-label"></div>
+              <div id="memoria-score-footer" class="memoria-score-footer hidden">
+                <div id="memoria-stepper" class="memoria-stepper">
+                  <button id="memoria-dec-btn" class="memoria-stepper-btn hard" type="button">−</button>
+                  <div class="memoria-stepper-value-wrap">
+                    <div id="memoria-stepper-value" class="memoria-stepper-value">0/5</div>
+                    <div id="memoria-stepper-label" class="memoria-stepper-label"></div>
+                  </div>
+                  <button id="memoria-inc-btn" class="memoria-stepper-btn medium" type="button">+</button>
                 </div>
-                <button id="memoria-inc-btn" class="fazauto-btn ok" type="button">+</button>
-              </div>
-              <div id="memoria-confirm-row" class="fazauto-actions single-action hidden">
-                <button id="memoria-confirm-btn" class="fazauto-btn ok medium-cta" type="button">
-                  Continue
-                </button>
+                <div id="memoria-confirm-row" class="memoria-confirm-row">
+                  <button id="memoria-confirm-btn" class="fazauto-btn medium-cta memoria-confirm-btn" type="button">
+                    Continue
+                  </button>
+                </div>
               </div>
             </div>
             <div id="cate-play-hint" class="cate-play-hint hidden"></div>
@@ -3380,6 +3504,9 @@
               : [];
             const remembered = Number(payload.memoriaRememberedCount) || 0;
             const wordCount = Number(payload.memoriaWordCount) || words.length || 0;
+            const memoriaScoreFooterEl = document.getElementById('memoria-score-footer');
+
+            memoriaPanelEl?.classList.toggle('scoring', isScoring);
 
             if (memoriaHintEl) {
               if (isScoring) {
@@ -3408,17 +3535,27 @@
             if (memoriaWordsEl) {
               memoriaWordsEl.innerHTML = '';
               if (isScoring) {
-                words.forEach((word, index) => {
-                  const row = document.createElement('div');
-                  row.textContent = `${index + 1}. ${word}`;
-                  memoriaWordsEl.appendChild(row);
+                // Two columns like the app: left half then right half.
+                const mid = Math.ceil(words.length / 2);
+                const columns = [words.slice(0, mid), words.slice(mid)];
+                columns.forEach((colWords, colIndex) => {
+                  const col = document.createElement('div');
+                  col.className = 'memoria-word-col';
+                  colWords.forEach((word, rowIndex) => {
+                    const index = colIndex === 0 ? rowIndex : mid + rowIndex;
+                    const row = document.createElement('div');
+                    row.className = 'memoria-word';
+                    row.textContent = `${index + 1}. ${word}`;
+                    col.appendChild(row);
+                  });
+                  memoriaWordsEl.appendChild(col);
                 });
               }
               memoriaWordsEl.classList.toggle('hidden', !isScoring);
               memoriaWordsEl.classList.toggle('dense', words.length > 11);
             }
-            if (memoriaStepperEl) {
-              memoriaStepperEl.classList.toggle('hidden', !isScoring);
+            if (memoriaScoreFooterEl) {
+              memoriaScoreFooterEl.classList.toggle('hidden', !isScoring);
             }
             if (memoriaStepperValueEl) {
               memoriaStepperValueEl.textContent = `${remembered}/${wordCount}`;
@@ -3427,9 +3564,6 @@
               memoriaStepperLabelEl.textContent =
                 payload.memoriaRememberedLabel ||
                 (lang === 'ro' ? 'Reținute' : 'Remembered');
-            }
-            if (memoriaConfirmRowEl) {
-              memoriaConfirmRowEl.classList.toggle('hidden', !isScoring);
             }
             if (memoriaConfirmBtn) {
               memoriaConfirmBtn.textContent =
@@ -3514,13 +3648,15 @@
           fazautoActionsEl.classList.remove('single-action');
 
           const isReveal = phase === 'reveal';
+          wordGamePromptEl.classList.remove('statements');
+          wordGamePromptEl.style.fontSize = '';
+          wordGamePromptEl.style.maxHeight = '';
+          // While the timer runs, keep the series secret on remote — only reveal at the end.
           if (isReveal) {
+            if (wordGameHeaderEl) wordGameHeaderEl.classList.remove('hidden');
             wordGameHeaderLabelEl.textContent =
               lang === 'ro' ? 'Răspuns' : 'Answer';
             wordGameHeaderValueEl.textContent = '';
-            wordGamePromptEl.classList.remove('statements');
-            wordGamePromptEl.style.fontSize = '';
-            wordGamePromptEl.style.maxHeight = '';
             wordGamePromptEl.textContent =
               payload.beepRevealLabel || payload.questionLabel || '';
             wordGamePromptEl.classList.toggle(
@@ -3528,17 +3664,11 @@
               !wordGamePromptEl.textContent
             );
           } else {
-            wordGameHeaderLabelEl.textContent =
-              lang === 'ro' ? 'Seria' : 'Series';
+            if (wordGameHeaderEl) wordGameHeaderEl.classList.add('hidden');
+            wordGameHeaderLabelEl.textContent = '';
             wordGameHeaderValueEl.textContent = '';
-            wordGamePromptEl.classList.remove('statements');
-            wordGamePromptEl.style.fontSize = '';
-            wordGamePromptEl.style.maxHeight = '';
-            wordGamePromptEl.textContent = payload.questionLabel || '';
-            wordGamePromptEl.classList.toggle(
-              'hidden',
-              !wordGamePromptEl.textContent
-            );
+            wordGamePromptEl.textContent = '';
+            wordGamePromptEl.classList.add('hidden');
           }
         } else if (isWwts) {
           if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
