@@ -2843,10 +2843,14 @@
         gameId: 'trivia',
       };
 
+      // Assigned by connectRemoteChannel; sendCommand always uses the live socket.
+      let channel = null;
+
       const sendCommand = async (action, extra = {}) => {
         const now = Date.now();
         if (now - lastTap < 120) return;
         lastTap = now;
+        if (!channel) return;
         await channel.send({
           type: 'broadcast',
           event: 'score_remote_command',
@@ -4218,25 +4222,117 @@
         updateTimer(payload, isResults, isPickGame);
       };
 
-      const channel = client
-        .channel(channelName, { config: { broadcast: { self: false } } })
-        .on('broadcast', { event: 'score_state' }, ({ payload }) => {
-          applyRemoteState(payload);
-        });
+      let reconnectTimer = null;
+      let reconnectAttempt = 0;
+      let connecting = false;
+      let remoteConnected = false;
+      let channelEpoch = 0;
 
-      channel.subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          setStatus('Connected', true);
-          channel.send({
-            type: 'broadcast',
-            event: 'score_remote_command',
-            payload: { action: 'request_state', source: 'remote_web' },
+      const clearReconnectTimer = () => {
+        if (reconnectTimer) {
+          clearTimeout(reconnectTimer);
+          reconnectTimer = null;
+        }
+      };
+
+      const scheduleReconnect = () => {
+        if (reconnectTimer || connecting) return;
+        const delay = Math.min(8000, 800 + reconnectAttempt * 700);
+        reconnectAttempt += 1;
+        setStatus(
+          reconnectAttempt > 1
+            ? `Reconnecting… (${reconnectAttempt})`
+            : 'Reconnecting…',
+          false
+        );
+        reconnectTimer = setTimeout(() => {
+          reconnectTimer = null;
+          connectRemoteChannel();
+        }, delay);
+      };
+
+      const connectRemoteChannel = async () => {
+        if (connecting) return;
+        connecting = true;
+        clearReconnectTimer();
+        const epoch = ++channelEpoch;
+        try {
+          const prev = channel;
+          channel = null;
+          remoteConnected = false;
+          if (prev) {
+            try {
+              await client.removeChannel(prev);
+            } catch {
+              try {
+                prev.unsubscribe();
+              } catch {
+                // ignore
+              }
+            }
+          }
+          if (epoch !== channelEpoch) return;
+
+          const next = client
+            .channel(channelName, { config: { broadcast: { self: false } } })
+            .on('broadcast', { event: 'score_state' }, ({ payload }) => {
+              applyRemoteState(payload);
+            });
+          channel = next;
+
+          next.subscribe((status) => {
+            // Ignore teardown/replace callbacks from older sockets.
+            if (epoch !== channelEpoch || channel !== next) return;
+            if (status === 'SUBSCRIBED') {
+              reconnectAttempt = 0;
+              remoteConnected = true;
+              setStatus('Connected', true);
+              next.send({
+                type: 'broadcast',
+                event: 'score_remote_command',
+                payload: { action: 'request_state', source: 'remote_web' },
+              });
+              return;
+            }
+            if (
+              status === 'CHANNEL_ERROR' ||
+              status === 'TIMED_OUT' ||
+              status === 'CLOSED'
+            ) {
+              remoteConnected = false;
+              setStatus(
+                status === 'CLOSED' ? 'Offline' : 'Disconnected',
+                false
+              );
+              scheduleReconnect();
+              return;
+            }
+            setStatus(`Status: ${status}`, false);
           });
+        } catch (err) {
+          console.warn('Remote channel connect failed', err);
+          if (epoch === channelEpoch) scheduleReconnect();
+        } finally {
+          if (epoch === channelEpoch) connecting = false;
+        }
+      };
+
+      connectRemoteChannel();
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState !== 'visible') return;
+        if (!remoteConnected || !channel) {
+          connectRemoteChannel();
           return;
         }
-        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') setStatus('Disconnected', false);
-        else if (status === 'CLOSED') setStatus('Offline', false);
-        else setStatus(`Status: ${status}`, false);
+        // Refresh state after returning to the tab (bypass tap debounce).
+        channel.send({
+          type: 'broadcast',
+          event: 'score_remote_command',
+          payload: { action: 'request_state', source: 'remote_web' },
+        });
+      });
+      window.addEventListener('online', () => {
+        if (!remoteConnected) connectRemoteChannel();
       });
 
       keepYesBtn.addEventListener('click', () => {
