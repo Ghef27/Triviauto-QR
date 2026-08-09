@@ -1053,27 +1053,28 @@
         position: relative;
         width: 100%;
         aspect-ratio: 2.15 / 1;
-        max-height: 168px;
+        max-height: 210px;
         background: url('./assets/players_big_container.png') center / 100% 100% no-repeat;
         display: flex;
         align-items: flex-end;
         justify-content: space-around;
-        padding: 10px 18px 14px;
+        padding: 18px 14px 16px;
         box-sizing: border-box;
+        overflow: visible;
       }
 
       .pick-players-ribbon {
         position: absolute;
-        top: -14px;
+        top: -16px;
         left: 50%;
         transform: translateX(-50%);
-        width: min(52%, 230px);
+        width: min(54%, 240px);
         aspect-ratio: 790 / 172;
         background: url('./assets/ribbon-banner-red.png') center / 100% 100% no-repeat;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 14% 8%;
+        padding: 0 14% 2%;
         box-sizing: border-box;
         z-index: 2;
         pointer-events: none;
@@ -1086,7 +1087,8 @@
         font-weight: 900;
         letter-spacing: 0.4px;
         line-height: 1;
-        transform: translateY(-10%);
+        /* Sit in the ribbon face (lower than the fold peak). */
+        transform: translateY(10%);
         text-shadow:
           -1.5px -1.5px 0 #000,
           0 -1.5px 0 #000,
@@ -1100,8 +1102,8 @@
       }
 
       .pick-player-slot {
-        width: 42%;
-        max-width: 120px;
+        width: 46%;
+        max-width: 148px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -1113,8 +1115,8 @@
       }
 
       .pick-player-frame {
-        width: 72px;
-        height: 72px;
+        width: 96px;
+        height: 96px;
         background: url('./assets/players_circle_frame.png') center / contain no-repeat;
         display: grid;
         place-items: center;
@@ -1123,19 +1125,19 @@
       }
 
       .pick-player-avatar {
-        width: 78%;
-        height: 78%;
+        width: 90%;
+        height: 90%;
         object-fit: contain;
       }
 
       .pick-player-nameplate {
-        margin-top: -14px;
+        margin-top: -18px;
         width: 100%;
         aspect-ratio: 386 / 144;
         background: url('./assets/players_container_name.png') center / 100% 100% no-repeat;
         display: grid;
         place-items: center;
-        padding: 10px 10px 6px;
+        padding: 12px 10px 6px;
         box-sizing: border-box;
         z-index: 2;
       }
@@ -1251,12 +1253,18 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
+        overflow-x: visible;
         overflow-y: auto;
-        padding: 4px 2px 8px;
+        padding: 10px 8px 12px;
         -webkit-overflow-scrolling: touch;
       }
 
+      .pick-player-name {
+        font-size: 15px;
+      }
+
       .pick-game-card {
+        position: relative;
         background: var(--surface);
         border-radius: 12px;
         padding: 14px;
@@ -1270,11 +1278,31 @@
         color: inherit;
         cursor: pointer;
         font: inherit;
+        overflow: visible;
       }
 
       .pick-game-card:disabled {
         opacity: 0.55;
         cursor: default;
+      }
+
+      .pick-game-card-coop {
+        position: absolute;
+        top: -7px;
+        right: -8px;
+        z-index: 4;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: #2f9e4f;
+        border: 1.5px solid #1f6b34;
+        color: #ffffff;
+        font-size: 11px;
+        line-height: 13px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        transform: rotate(12deg);
+        box-shadow: 0 1px 1.5px rgba(26, 77, 40, 0.35);
+        pointer-events: none;
       }
 
       .pick-game-card-header {
@@ -3896,20 +3924,36 @@
       };
 
       const renderPickGameGrid = (payload = {}) => {
-        const games = Array.isArray(payload.availableGames) ? payload.availableGames : [];
+        const games = Array.isArray(payload.availableGames)
+          ? [...payload.availableGames]
+          : [];
+        // Keep Random Game first even if an older host omits sort order.
+        games.sort((a, b) => {
+          const aRandom = Boolean(a?.isRandom) || a?.id === 'random';
+          const bRandom = Boolean(b?.isRandom) || b?.id === 'random';
+          if (aRandom !== bRandom) return aRandom ? -1 : 1;
+          return 0;
+        });
         const playLabel = payload.playLabel || 'Play';
         const comingSoonLabel = payload.comingSoonLabel || 'Coming soon';
         pickGameGridEl.innerHTML = '';
 
         games.forEach((game) => {
           const available = Boolean(game.available);
+          const isCoop =
+            Boolean(game.isCoop) ||
+            game.scoringMode === 'coop' ||
+            game.id === 'povestea-betivului' ||
+            game.id === 'memoria-vitezei';
           const card = document.createElement('button');
           card.type = 'button';
           card.className = 'pick-game-card';
           card.disabled = !available;
           card.setAttribute(
             'aria-label',
-            `${game.title || game.id}. ${available ? playLabel : comingSoonLabel}`
+            `${game.title || game.id}. ${available ? playLabel : comingSoonLabel}${
+              isCoop ? '. Co-op' : ''
+            }`
           );
 
           const header = document.createElement('div');
@@ -3953,6 +3997,13 @@
             soon.className = 'pick-game-soon';
             soon.textContent = comingSoonLabel;
             card.appendChild(soon);
+          }
+
+          if (isCoop) {
+            const coop = document.createElement('div');
+            coop.className = 'pick-game-card-coop';
+            coop.textContent = 'Co-op';
+            card.appendChild(coop);
           }
 
           pickGameGridEl.appendChild(card);
