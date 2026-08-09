@@ -67,22 +67,25 @@
 
       .logo-glare {
         position: absolute;
-        inset: -22px;
-        border-radius: 50%;
-        background:
-          radial-gradient(circle at center, rgba(255, 246, 200, 0.85) 0%, rgba(255, 224, 138, 0.35) 42%, rgba(255, 208, 96, 0) 70%),
-          repeating-conic-gradient(
-            from 0deg,
-            rgba(255, 236, 170, 0.42) 0deg 8deg,
-            transparent 8deg 20deg
-          );
+        width: 164px;
+        height: 164px;
+        display: grid;
+        place-items: center;
+        transform: scale(1.05);
         animation: spin-glare 16s linear infinite;
         pointer-events: none;
       }
 
+      .logo-glare svg {
+        width: 140px;
+        height: 140px;
+        display: block;
+        overflow: visible;
+      }
+
       @keyframes spin-glare {
         to {
-          transform: rotate(360deg);
+          transform: scale(1.05) rotate(360deg);
         }
       }
 
@@ -200,6 +203,155 @@
         gap: 12px;
       }
 
+      .score-row.coop-mode {
+        grid-template-columns: 1fr;
+      }
+
+      .score-row.coop-mode .score-card.coop-hidden {
+        display: none;
+      }
+
+      .score-row.coop-mode .score-card.coop-main {
+        padding: 18px 16px;
+      }
+
+      .score-subtitle {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--subtitle);
+        text-align: center;
+        margin-top: -4px;
+      }
+
+      .score-subtitle.hidden {
+        display: none;
+      }
+
+      .drunkard-panel {
+        display: grid;
+        gap: 14px;
+        margin-top: 2px;
+      }
+
+      .drunkard-panel.hidden {
+        display: none;
+      }
+
+      .memoria-panel {
+        display: grid;
+        gap: 12px;
+        margin-top: 2px;
+      }
+
+      .memoria-panel.hidden {
+        display: none;
+      }
+
+      .memoria-hint {
+        font-size: 18px;
+        font-weight: 800;
+        text-align: center;
+        color: var(--text);
+        line-height: 1.3;
+      }
+
+      .memoria-words {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2px 8px;
+        text-align: left;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+        max-height: 42vh;
+        overflow: auto;
+        line-height: 1.25;
+      }
+
+      .memoria-words.dense {
+        font-size: 11px;
+        gap: 1px 6px;
+        max-height: 46vh;
+      }
+
+      .memoria-stepper {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .memoria-stepper-value {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 900;
+        color: var(--text);
+      }
+
+      .memoria-stepper-label {
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted, #9aa0a6);
+      }
+
+      .drunkard-bridge {
+        text-align: center;
+        padding: 4px 2px 2px;
+      }
+
+      .drunkard-bridge.hidden {
+        display: none;
+      }
+
+      .drunkard-bridge-row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .drunkard-bridge-col {
+        display: grid;
+        gap: 6px;
+        justify-items: center;
+        min-width: 0;
+      }
+
+      .drunkard-bridge-caption {
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--subtitle);
+        text-align: center;
+      }
+
+      .drunkard-bridge-word {
+        font-size: 22px;
+        font-weight: 900;
+        color: var(--text);
+        line-height: 1.2;
+        text-align: center;
+        word-break: break-word;
+      }
+
+      .drunkard-bridge-arrow {
+        font-size: 22px;
+        font-weight: 900;
+        color: var(--text);
+        margin-top: 14px;
+      }
+
+      .drunkard-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .drunkard-actions.hidden {
+        display: none;
+      }
+
       .score-card {
         background: var(--surface);
         border-radius: 14px;
@@ -219,6 +371,29 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        flex-shrink: 1;
+        min-width: 0;
+      }
+
+      .score-name-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        max-width: 100%;
+        padding: 0 2px;
+      }
+
+      .score-avatar {
+        width: 46px;
+        height: calc(36px * 376 / 328);
+        flex-shrink: 0;
+        object-fit: contain;
+        display: block;
+      }
+
+      .score-avatar.hidden {
+        display: none;
       }
 
       .score-controls {
@@ -315,6 +490,32 @@
         text-align: center;
       }
 
+      .trivia-answer-panel {
+        display: grid;
+        gap: 6px;
+        width: 100%;
+        text-align: center;
+        padding: 4px 4px 2px;
+      }
+
+      .trivia-answer-panel.hidden {
+        display: none;
+      }
+
+      .trivia-answer-label {
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--text-muted);
+      }
+
+      .trivia-answer-value {
+        font-size: 22px;
+        font-weight: 900;
+        color: var(--text);
+        line-height: 1.25;
+        word-break: break-word;
+      }
+
       .word-game-panel {
         display: grid;
         gap: 10px;
@@ -344,6 +545,14 @@
         text-align: center;
         line-height: 1.25;
         padding: 4px 2px 2px;
+      }
+
+      .word-game-prompt.statements {
+        white-space: pre-line;
+        text-align: left;
+        max-height: min(42vh, 320px);
+        overflow: hidden;
+        width: 100%;
       }
 
       .word-game-letter-block {
@@ -410,6 +619,81 @@
         width: 72px;
         height: 72px;
         justify-self: center;
+      }
+
+      .banana-points-badge {
+        position: absolute;
+        right: calc(100% + 10px);
+        top: 50%;
+        transform: translateY(-50%);
+        min-width: 56px;
+        height: 56px;
+        border-radius: 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--surface-elevated);
+        box-shadow: var(--shadow);
+        z-index: 2;
+      }
+
+      .banana-points-badge.hidden {
+        display: none;
+      }
+
+      .banana-points-value {
+        font-size: 20px;
+        font-weight: 900;
+        line-height: 1;
+        color: var(--text);
+      }
+
+      .banana-points-unit {
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .drunkard-words-badge {
+        position: absolute;
+        right: calc(100% + 10px);
+        top: 50%;
+        transform: translateY(-50%);
+        min-width: 72px;
+        max-width: 88px;
+        height: 64px;
+        padding: 6px;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        background: var(--surface-elevated);
+        border: 2px solid rgba(58, 28, 12, 0.35);
+        box-shadow: var(--shadow);
+        z-index: 2;
+      }
+
+      .drunkard-words-badge.hidden {
+        display: none;
+      }
+
+      .drunkard-words-value {
+        font-size: 20px;
+        font-weight: 900;
+        line-height: 1;
+        color: var(--text);
+      }
+
+      .drunkard-words-label {
+        font-size: 9px;
+        line-height: 1.15;
+        font-weight: 800;
+        color: var(--text-muted);
+        text-align: center;
       }
 
       .timer-svg {
@@ -815,6 +1099,340 @@
         margin-top: 6px;
       }
 
+      .clue-race-panel {
+        display: grid;
+        gap: 10px;
+        padding: 4px 0;
+        width: 100%;
+      }
+
+      .clue-race-meta {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--text-muted);
+      }
+
+      .clue-race-clue {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 900;
+        color: var(--text);
+        line-height: 1.3;
+      }
+
+      .clue-buzz-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+        align-items: center;
+      }
+
+      .clue-buzz-btn {
+        position: relative;
+        border: none;
+        border-radius: 0;
+        width: 100%;
+        aspect-ratio: 1347 / 358;
+        min-height: 44px;
+        padding: 0;
+        font-size: 12px;
+        font-weight: 800;
+        color: #2f1608;
+        cursor: pointer;
+        text-shadow: none;
+        box-shadow: none;
+        background: transparent url('./assets/empty_container.png') center / 100% 100% no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .clue-buzz-btn span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 80%;
+        height: 54%;
+        padding: 0 2px;
+        line-height: 1.15;
+        text-align: center;
+      }
+
+      .clue-buzz-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .clue-guess-field {
+        display: grid;
+        gap: 4px;
+      }
+
+      .clue-guess-label {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--text-muted);
+        text-align: center;
+      }
+
+      .clue-guess-input {
+        width: 100%;
+        min-height: 48px;
+        border: none;
+        border-radius: 0;
+        padding: 10px 16px;
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+        color: #ffffff;
+        background: transparent url('./assets/playername-button.png') center / 100% 100% no-repeat;
+      }
+
+      .clue-guess-input::placeholder {
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      .banana-panel {
+        display: grid;
+        gap: 10px;
+        width: 100%;
+      }
+
+      .banana-panel.prep-mode {
+        align-items: center;
+      }
+
+      .banana-roles {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .banana-roles.hidden {
+        display: none;
+      }
+
+      .banana-role {
+        min-width: 0;
+      }
+
+      .banana-role-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--text-muted);
+        line-height: 1.2;
+        margin-bottom: 2px;
+      }
+
+      .banana-role-name {
+        display: block;
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1.25;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .banana-answer-reveal {
+        display: grid;
+        gap: 6px;
+        width: 100%;
+        text-align: center;
+        padding: 4px 0 8px;
+      }
+
+      .banana-answer-reveal.hidden {
+        display: none;
+      }
+
+      .banana-correct-was-label {
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--text-muted);
+      }
+
+      .banana-correct-answer {
+        font-size: 28px;
+        font-weight: 900;
+        color: var(--text);
+        line-height: 1.2;
+      }
+
+      .banana-prep-ask {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--text);
+        text-align: center;
+        width: 100%;
+      }
+
+      .banana-prep-ask.hidden {
+        display: none;
+      }
+
+      .banana-proceed {
+        display: grid;
+        gap: 10px;
+        width: 100%;
+        margin-top: 4px;
+      }
+
+      .banana-proceed.hidden {
+        display: none;
+      }
+
+      .banana-proceed-ask {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--text);
+        text-align: center;
+      }
+
+      .banana-proceed-ask:empty {
+        display: none;
+      }
+
+      .banana-card {
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 88px;
+        text-align: center;
+        cursor: pointer;
+        color: #2f1608;
+        background: transparent url('./assets/empty_container.png') center / 100% 100% no-repeat;
+        box-shadow: none;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .banana-panel.prep-mode .banana-card.word-card {
+        width: min(100%, 320px);
+        min-height: 120px;
+        margin: 8px auto 4px;
+      }
+
+      .banana-card:disabled {
+        cursor: default;
+        opacity: 1;
+      }
+
+      .banana-card.locked {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .banana-card-label {
+        font-size: 11px;
+        font-weight: 800;
+        color: #7a5530;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        position: relative;
+        z-index: 2;
+      }
+
+      .banana-card-value {
+        font-size: 22px;
+        font-weight: 900;
+        line-height: 1.2;
+        word-break: break-word;
+        padding: 0 18px 8px;
+        position: relative;
+        z-index: 1;
+        color: #2f1608;
+      }
+
+      .banana-card-value.blurred {
+        filter: blur(22px);
+        user-select: none;
+        opacity: 0.95;
+        transform: scale(1.25);
+      }
+
+      .banana-panel.prep-mode .banana-card.word-card .banana-card-value.blurred {
+        filter: blur(22px);
+        transform: scale(1.25);
+      }
+
+      .banana-panel.prep-mode .banana-card-hint {
+        display: none;
+      }
+
+      .banana-card-hint {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 18px;
+        font-size: 13px;
+        font-weight: 800;
+        color: #5a3a1a;
+        background: rgba(255, 244, 220, 0.55);
+        border-radius: 12px;
+        z-index: 3;
+        pointer-events: none;
+      }
+
+      .banana-card-hint.hidden {
+        display: none;
+      }
+
+      .banana-outcome-row {
+        margin-top: 4px;
+      }
+
+      .banana-play-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .banana-play-actions.single-action {
+        grid-template-columns: 1fr;
+      }
+
+      .banana-mark-btn {
+        min-height: 44px;
+        height: 44px;
+        font-size: 14px;
+        padding: 6px 10px;
+      }
+
+      .banana-play-actions .fazauto-btn {
+        min-height: 44px;
+        height: 44px;
+        font-size: 14px;
+        padding: 6px 10px;
+      }
+
+      .banana-questions-row {
+        display: grid;
+        gap: 8px;
+        margin-top: 4px;
+      }
+
+      .banana-questions-left {
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--text-muted);
+        text-align: center;
+      }
+
       .fazauto-btn {
         border: none;
         border-radius: 12px;
@@ -902,7 +1520,36 @@
     <div class="page">
       <header class="app-header">
         <div class="logo-stage">
-          <div class="logo-glare" aria-hidden="true"></div>
+          <div class="logo-glare" aria-hidden="true">
+            <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="logoGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#fff6c8" stop-opacity="0.85" />
+                  <stop offset="40%" stop-color="#ffe08a" stop-opacity="0.35" />
+                  <stop offset="100%" stop-color="#ffd060" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <circle cx="70" cy="70" r="70" fill="url(#logoGlow)" />
+              <path d="M 77.05 59.55 L 140.00 70.00 L 77.05 80.45 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 80.19 62.59 L 135.78 93.94 L 73.05 82.23 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 82.11 66.53 L 123.62 115.00 L 68.68 82.53 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 82.57 70.88 L 105.00 130.62 L 64.48 81.32 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 81.51 75.12 L 82.16 138.94 L 60.94 78.75 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 79.06 78.75 L 57.84 138.94 L 58.49 75.12 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 75.52 81.32 L 35.00 130.62 L 57.43 70.88 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 71.32 82.53 L 16.38 115.00 L 57.89 66.53 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 66.95 82.23 L 4.22 93.94 L 59.81 62.59 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 62.95 80.45 L 0.00 70.00 L 62.95 59.55 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 59.81 77.41 L 4.22 46.06 L 66.95 57.77 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 57.89 73.47 L 16.38 25.00 L 71.32 57.47 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 57.43 69.12 L 35.00 9.38 L 75.52 58.68 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 58.49 64.88 L 57.84 1.06 L 79.06 61.25 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 60.94 61.25 L 82.16 1.06 L 81.51 64.88 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 64.48 58.68 L 105.00 9.38 L 82.57 69.12 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 68.68 57.47 L 123.62 25.00 L 82.11 73.47 Z" fill="rgba(255, 236, 170, 0.42)" />
+              <path d="M 73.05 57.77 L 135.78 46.06 L 80.19 77.41 Z" fill="rgba(255, 236, 170, 0.42)" />
+            </svg>
+          </div>
           <img id="app-logo" src="./assets/icon_playauto.png" class="app-logo" alt="PlayAuto" />
         </div>
       </header>
@@ -920,6 +1567,11 @@
 
         <div id="game-hud" class="game-hud hidden">
           <div id="round-label" class="round-label">Round 1 / 20</div>
+
+          <div id="trivia-answer-panel" class="trivia-answer-panel hidden">
+            <div id="trivia-answer-label" class="trivia-answer-label">Answer:</div>
+            <div id="trivia-answer-value" class="trivia-answer-value"></div>
+          </div>
 
           <div id="word-game-panel" class="word-game-panel hidden">
             <div id="word-game-header" class="word-game-header">
@@ -959,11 +1611,131 @@
                 </button>
               </div>
             </div>
+            <div id="clue-race-panel" class="clue-race-panel hidden">
+              <div id="clue-race-meta" class="clue-race-meta"></div>
+              <div id="clue-race-clue" class="clue-race-clue"></div>
+              <div id="clue-buzz-row" class="clue-buzz-row hidden">
+                <button id="clue-buzz-p1" class="clue-buzz-btn" type="button"><span>P1</span></button>
+                <button id="clue-buzz-both" class="clue-buzz-btn" type="button"><span>Both</span></button>
+                <button id="clue-buzz-p2" class="clue-buzz-btn" type="button"><span>P2</span></button>
+              </div>
+              <div id="clue-type-panel" class="clue-race-panel hidden">
+                <div id="clue-type-ask" class="word-game-keep-ask">Type your guess</div>
+                <div id="clue-guess-p1-wrap" class="clue-guess-field hidden">
+                  <div id="clue-guess-p1-label" class="clue-guess-label">Player 1</div>
+                  <input id="clue-guess-p1" class="clue-guess-input" type="text" autocomplete="off" autocapitalize="words" />
+                </div>
+                <div id="clue-guess-p2-wrap" class="clue-guess-field hidden">
+                  <div id="clue-guess-p2-label" class="clue-guess-label">Player 2</div>
+                  <input id="clue-guess-p2" class="clue-guess-input" type="text" autocomplete="off" autocapitalize="words" />
+                </div>
+                <div class="fazauto-actions single-action">
+                  <button id="clue-submit-btn" class="fazauto-btn ok medium-cta" type="button">
+                    Lock in
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="banana-panel" class="banana-panel hidden">
+              <div id="banana-roles" class="banana-roles hidden">
+                <div class="banana-role">
+                  <span id="banana-role-guide-label" class="banana-role-label"></span>
+                  <span id="banana-role-guide-name" class="banana-role-name"></span>
+                </div>
+                <div class="banana-role">
+                  <span id="banana-role-seeker-label" class="banana-role-label"></span>
+                  <span id="banana-role-seeker-name" class="banana-role-name"></span>
+                </div>
+              </div>
+              <div id="banana-answer-reveal" class="banana-answer-reveal hidden">
+                <div id="banana-correct-was-label" class="banana-correct-was-label"></div>
+                <div id="banana-correct-answer" class="banana-correct-answer"></div>
+              </div>
+              <div id="banana-prep-ask" class="banana-prep-ask hidden"></div>
+              <button id="banana-word-card" class="banana-card word-card" type="button">
+                <div id="banana-word-label" class="banana-card-label">Word</div>
+                <div id="banana-word-value" class="banana-card-value blurred">••••</div>
+                <div id="banana-word-hint" class="banana-card-hint">Hold to reveal</div>
+              </button>
+              <button id="banana-category-card" class="banana-card" type="button">
+                <div id="banana-category-label" class="banana-card-label">Category</div>
+                <div id="banana-category-value" class="banana-card-value blurred">••••</div>
+                <div id="banana-category-hint" class="banana-card-hint">Tap to reveal</div>
+              </button>
+              <button id="banana-hint-card" class="banana-card" type="button">
+                <div id="banana-hint-label" class="banana-card-label">Hint</div>
+                <div id="banana-hint-value" class="banana-card-value blurred">••••</div>
+                <div id="banana-hint-hint" class="banana-card-hint">Tap to reveal</div>
+              </button>
+              <div id="banana-questions-row" class="banana-questions-row hidden">
+                <div id="banana-questions-left" class="banana-questions-left"></div>
+                <button id="banana-mark-question-btn" class="fazauto-btn ok medium-cta banana-mark-btn" type="button">
+                  A question was asked
+                </button>
+              </div>
+              <div id="banana-play-actions" class="banana-play-actions hidden">
+                <button id="banana-guessed-btn" class="fazauto-btn ok" type="button">Guessed!</button>
+                <button id="banana-missed-btn" class="fazauto-btn foul" type="button">Give up</button>
+              </div>
+              <div id="banana-proceed" class="banana-proceed hidden">
+                <div id="banana-proceed-ask" class="banana-proceed-ask"></div>
+                <div class="fazauto-actions single-action">
+                  <button id="banana-proceed-btn" class="fazauto-btn ok medium-cta" type="button">
+                    Continue
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="drunkard-panel" class="drunkard-panel hidden">
+              <div id="drunkard-bridge" class="drunkard-bridge">
+                <div class="drunkard-bridge-row">
+                  <div class="drunkard-bridge-col">
+                    <div id="drunkard-start-caption" class="drunkard-bridge-caption"></div>
+                    <div id="drunkard-start-word" class="drunkard-bridge-word">…</div>
+                  </div>
+                  <div class="drunkard-bridge-arrow">→</div>
+                  <div class="drunkard-bridge-col">
+                    <div id="drunkard-end-caption" class="drunkard-bridge-caption"></div>
+                    <div id="drunkard-end-word" class="drunkard-bridge-word">…</div>
+                  </div>
+                </div>
+              </div>
+              <div id="drunkard-actions" class="drunkard-actions hidden">
+                <button id="drunkard-next-btn" class="fazauto-btn ok" type="button">Next</button>
+                <button id="drunkard-skip-btn" class="fazauto-btn foul" type="button">Skip</button>
+              </div>
+            </div>
+            <div id="memoria-panel" class="memoria-panel hidden">
+              <div id="memoria-hint" class="memoria-hint"></div>
+              <div id="memoria-words-caption" class="drunkard-bridge-caption hidden"></div>
+              <div id="memoria-words" class="memoria-words hidden"></div>
+              <div id="memoria-stepper" class="memoria-stepper hidden">
+                <button id="memoria-dec-btn" class="fazauto-btn foul" type="button">−</button>
+                <div>
+                  <div id="memoria-stepper-value" class="memoria-stepper-value">0/5</div>
+                  <div id="memoria-stepper-label" class="memoria-stepper-label"></div>
+                </div>
+                <button id="memoria-inc-btn" class="fazauto-btn ok" type="button">+</button>
+              </div>
+              <div id="memoria-confirm-row" class="fazauto-actions single-action hidden">
+                <button id="memoria-confirm-btn" class="fazauto-btn ok medium-cta" type="button">
+                  Continue
+                </button>
+              </div>
+            </div>
             <div id="cate-play-hint" class="cate-play-hint hidden"></div>
             <div id="turn-hint" class="turn-hint hidden"></div>
           </div>
 
           <div class="timer-wrap">
+            <div id="banana-points-badge" class="banana-points-badge hidden" aria-hidden="true">
+              <span id="banana-points-value" class="banana-points-value">3</span>
+              <span id="banana-points-unit" class="banana-points-unit">pct</span>
+            </div>
+            <div id="drunkard-words-badge" class="drunkard-words-badge hidden" aria-hidden="true">
+              <span id="drunkard-words-value" class="drunkard-words-value">2</span>
+              <span id="drunkard-words-label" class="drunkard-words-label">words each</span>
+            </div>
             <svg id="timer-svg" class="timer-svg" width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
               <circle cx="36" cy="36" r="32" stroke="var(--timer-track)" stroke-width="6" fill="transparent" />
               <circle
@@ -984,8 +1756,13 @@
         </div>
 
         <div id="score-row" class="score-row">
-          <div class="score-card">
-            <div id="p1-name" class="score-name">Player 1</div>
+          <div id="score-card-p1" class="score-card coop-main">
+            <div class="score-name-row">
+              <img id="p1-avatar-left" class="score-avatar hidden" alt="" />
+              <div id="p1-name" class="score-name">Player 1</div>
+              <img id="p1-avatar" class="score-avatar hidden" alt="" />
+            </div>
+            <div id="p1-score-subtitle" class="score-subtitle hidden"></div>
             <div class="score-controls">
               <button class="score-btn" data-action="dec_p1" aria-label="Player 1 minus">-</button>
               <div id="p1-score" class="score-value">0</div>
@@ -995,8 +1772,11 @@
               <img id="p1-win" class="win-badge hidden" src="./assets/win-badge.png" alt="Winner" />
             </div>
           </div>
-          <div class="score-card">
-            <div id="p2-name" class="score-name">Player 2</div>
+          <div id="score-card-p2" class="score-card">
+            <div class="score-name-row">
+              <div id="p2-name" class="score-name">Player 2</div>
+              <img id="p2-avatar" class="score-avatar hidden" alt="" />
+            </div>
             <div class="score-controls">
               <button class="score-btn" data-action="dec_p2" aria-label="Player 2 minus">-</button>
               <div id="p2-score" class="score-value">0</div>
@@ -1013,19 +1793,19 @@
             <button id="pause-btn" class="icon-btn" data-action="pause_or_resume" aria-label="Pause">
               <img id="pause-icon" src="./assets/pause-circle.png" alt="" />
             </button>
-            <span id="pause-label" class="control-label">Pauza</span>
+            <span id="pause-label" class="control-label">Pauză</span>
           </div>
           <div class="control-row">
             <button id="stop-btn" class="icon-btn" data-action="end_game" aria-label="Stop">
               <img src="./assets/stop-circle.png" alt="" />
             </button>
-            <span id="stop-label" class="control-label">Incheie jocul</span>
+            <span id="stop-label" class="control-label">Încheie jocul</span>
           </div>
           <div class="control-row">
             <button id="block-btn" class="icon-btn" data-action="block_question" aria-label="Block question">
               <img src="./assets/cross-circle.png" alt="" />
             </button>
-            <span id="block-label" class="control-label">Blocheaza intrebarea</span>
+            <span id="block-label" class="control-label">Blochează întrebarea</span>
           </div>
         </div>
 
@@ -1063,10 +1843,15 @@
       const statusEl = document.getElementById('status');
       const resultsHeadEl = document.getElementById('results-head');
       const scoreRowEl = document.getElementById('score-row');
+      const scoreCardP1El = document.getElementById('score-card-p1');
+      const scoreCardP2El = document.getElementById('score-card-p2');
       const gameOverLabelEl = document.getElementById('game-over-label');
       const finalScoresLabelEl = document.getElementById('final-scores-label');
       const p1NameEl = document.getElementById('p1-name');
       const p2NameEl = document.getElementById('p2-name');
+      const p1AvatarEl = document.getElementById('p1-avatar');
+      const p1AvatarLeftEl = document.getElementById('p1-avatar-left');
+      const p2AvatarEl = document.getElementById('p2-avatar');
       const p1ScoreEl = document.getElementById('p1-score');
       const p2ScoreEl = document.getElementById('p2-score');
       const p1WinEl = document.getElementById('p1-win');
@@ -1074,10 +1859,20 @@
       const gameHudEl = document.getElementById('game-hud');
       const gameControlsEl = document.getElementById('game-controls');
       const roundLabelEl = document.getElementById('round-label');
+      const triviaAnswerPanelEl = document.getElementById('trivia-answer-panel');
+      const triviaAnswerLabelEl = document.getElementById('trivia-answer-label');
+      const triviaAnswerValueEl = document.getElementById('trivia-answer-value');
       const timerSvgEl = document.getElementById('timer-svg');
       const timerProgressEl = document.getElementById('timer-progress');
       const timerLabelEl = document.getElementById('timer-label');
       const infiniteTimerEl = document.getElementById('infinite-timer');
+      const bananaPointsBadgeEl = document.getElementById('banana-points-badge');
+      const bananaPointsValueEl = document.getElementById('banana-points-value');
+      const bananaPointsUnitEl = document.getElementById('banana-points-unit');
+      const drunkardWordsBadgeEl = document.getElementById('drunkard-words-badge');
+      const drunkardWordsValueEl = document.getElementById('drunkard-words-value');
+      const drunkardWordsLabelEl = document.getElementById('drunkard-words-label');
+      const p1ScoreSubtitleEl = document.getElementById('p1-score-subtitle');
       const appLogoEl = document.getElementById('app-logo');
       const wordGamePanelEl = document.getElementById('word-game-panel');
       const wordGameHeaderLabelEl = document.getElementById('word-game-header-label');
@@ -1120,6 +1915,74 @@
       const cateMarkCountEl = document.getElementById('cate-mark-count');
       const cateConfirmBtn = document.getElementById('cate-confirm-btn');
       const catePlayHintEl = document.getElementById('cate-play-hint');
+      const clueRacePanelEl = document.getElementById('clue-race-panel');
+      const clueRaceMetaEl = document.getElementById('clue-race-meta');
+      const clueRaceClueEl = document.getElementById('clue-race-clue');
+      const clueBuzzRowEl = document.getElementById('clue-buzz-row');
+      const bananaPanelEl = document.getElementById('banana-panel');
+      const drunkardPanelEl = document.getElementById('drunkard-panel');
+      const drunkardBridgeEl = document.getElementById('drunkard-bridge');
+      const drunkardStartCaptionEl = document.getElementById('drunkard-start-caption');
+      const drunkardStartWordEl = document.getElementById('drunkard-start-word');
+      const drunkardEndCaptionEl = document.getElementById('drunkard-end-caption');
+      const drunkardEndWordEl = document.getElementById('drunkard-end-word');
+      const drunkardActionsEl = document.getElementById('drunkard-actions');
+      const drunkardNextBtn = document.getElementById('drunkard-next-btn');
+      const drunkardSkipBtn = document.getElementById('drunkard-skip-btn');
+      const memoriaPanelEl = document.getElementById('memoria-panel');
+      const memoriaHintEl = document.getElementById('memoria-hint');
+      const memoriaWordsCaptionEl = document.getElementById('memoria-words-caption');
+      const memoriaWordsEl = document.getElementById('memoria-words');
+      const memoriaStepperEl = document.getElementById('memoria-stepper');
+      const memoriaStepperValueEl = document.getElementById('memoria-stepper-value');
+      const memoriaStepperLabelEl = document.getElementById('memoria-stepper-label');
+      const memoriaConfirmRowEl = document.getElementById('memoria-confirm-row');
+      const memoriaDecBtn = document.getElementById('memoria-dec-btn');
+      const memoriaIncBtn = document.getElementById('memoria-inc-btn');
+      const memoriaConfirmBtn = document.getElementById('memoria-confirm-btn');
+      const bananaRolesEl = document.getElementById('banana-roles');
+      const bananaRoleGuideLabelEl = document.getElementById('banana-role-guide-label');
+      const bananaRoleGuideNameEl = document.getElementById('banana-role-guide-name');
+      const bananaRoleSeekerLabelEl = document.getElementById('banana-role-seeker-label');
+      const bananaRoleSeekerNameEl = document.getElementById('banana-role-seeker-name');
+      const bananaWordCardEl = document.getElementById('banana-word-card');
+      const bananaWordLabelEl = document.getElementById('banana-word-label');
+      const bananaWordValueEl = document.getElementById('banana-word-value');
+      const bananaWordHintEl = document.getElementById('banana-word-hint');
+      let bananaWordPeeking = false;
+      const bananaCategoryCardEl = document.getElementById('banana-category-card');
+      const bananaCategoryLabelEl = document.getElementById('banana-category-label');
+      const bananaCategoryValueEl = document.getElementById('banana-category-value');
+      const bananaCategoryHintEl = document.getElementById('banana-category-hint');
+      const bananaHintCardEl = document.getElementById('banana-hint-card');
+      const bananaHintLabelEl = document.getElementById('banana-hint-label');
+      const bananaHintValueEl = document.getElementById('banana-hint-value');
+      const bananaHintHintEl = document.getElementById('banana-hint-hint');
+      const bananaGuessedBtn = document.getElementById('banana-guessed-btn');
+      const bananaMissedBtn = document.getElementById('banana-missed-btn');
+      const bananaPlayActionsEl = document.getElementById('banana-play-actions');
+      const bananaQuestionsRowEl = document.getElementById('banana-questions-row');
+      const bananaQuestionsLeftEl = document.getElementById('banana-questions-left');
+      const bananaMarkQuestionBtn = document.getElementById('banana-mark-question-btn');
+      const bananaAnswerRevealEl = document.getElementById('banana-answer-reveal');
+      const bananaCorrectWasLabelEl = document.getElementById('banana-correct-was-label');
+      const bananaCorrectAnswerEl = document.getElementById('banana-correct-answer');
+      const bananaPrepAskEl = document.getElementById('banana-prep-ask');
+      const bananaProceedEl = document.getElementById('banana-proceed');
+      const bananaProceedAskEl = document.getElementById('banana-proceed-ask');
+      const bananaProceedBtn = document.getElementById('banana-proceed-btn');
+      const clueBuzzP1Btn = document.getElementById('clue-buzz-p1');
+      const clueBuzzP2Btn = document.getElementById('clue-buzz-p2');
+      const clueBuzzBothBtn = document.getElementById('clue-buzz-both');
+      const clueTypePanelEl = document.getElementById('clue-type-panel');
+      const clueTypeAskEl = document.getElementById('clue-type-ask');
+      const clueGuessP1WrapEl = document.getElementById('clue-guess-p1-wrap');
+      const clueGuessP2WrapEl = document.getElementById('clue-guess-p2-wrap');
+      const clueGuessP1LabelEl = document.getElementById('clue-guess-p1-label');
+      const clueGuessP2LabelEl = document.getElementById('clue-guess-p2-label');
+      const clueGuessP1Input = document.getElementById('clue-guess-p1');
+      const clueGuessP2Input = document.getElementById('clue-guess-p2');
+      const clueSubmitBtn = document.getElementById('clue-submit-btn');
       const turnHintEl = document.getElementById('turn-hint');
       const scoreBtns = Array.from(document.querySelectorAll('.score-btn'));
       const commandButtons = Array.from(document.querySelectorAll('[data-action]'));
@@ -1147,26 +2010,124 @@
           src: './assets/icon_catestii.png',
           alt: 'Câte știi?',
         },
+        'clue-race': {
+          src: './assets/icon_cursaindiciilor.png',
+          alt: 'Cursa indiciilor',
+        },
+        'fact-or-fiction': {
+          src: './assets/icon_adevarsaufictiune.png',
+          alt: 'Realitate vs Ficțiune',
+        },
+        'sunt-o-banana': {
+          src: './assets/icon_suntobanana.png',
+          alt: 'Sunt o banană?!',
+        },
+        'povestea-betivului': {
+          src: './assets/jocuri_povesteabetivului.png',
+          alt: 'Povestea bețivului',
+        },
+        'memoria-vitezei': {
+          src: './assets/jocuri_vitezamemoriei.png',
+          alt: 'Memoria vitezei',
+        },
+        beep: {
+          src: './assets/jocuri_beep.png',
+          alt: 'Beep!',
+        },
         default: { src: './assets/icon_playauto.png', alt: 'PlayAuto' },
+      };
+
+      const PLAYER_AVATAR_IDS = new Set([
+        'players_1',
+        'players_2',
+        'players_3',
+        'players_4',
+        'players_5',
+        'players_6',
+        'players_7',
+        'players_8',
+        'players_17',
+        'players_18',
+        'players_19',
+        'players_20',
+        'players_21',
+        'players_22',
+        'players_24',
+        'players_25',
+        'players_26',
+        'players_27',
+        'players_28',
+        'players_29',
+        'players_30',
+        'players_31',
+        'players_32',
+        'players_33',
+        'players_34',
+        'players_35',
+        'players_36',
+        'players_37',
+        'players_38',
+        'players_39',
+        'players_40',
+      ]);
+
+      const resolvePlayerAvatarSrc = (avatarId, fallbackId = 'players_1') => {
+        const id = PLAYER_AVATAR_IDS.has(avatarId) ? avatarId : fallbackId;
+        return `./assets/${id}.png`;
+      };
+
+      const setScoreAvatar = (imgEl, avatarId, fallbackId, { hidden = false } = {}) => {
+        if (!imgEl) return;
+        if (hidden) {
+          imgEl.classList.add('hidden');
+          imgEl.removeAttribute('src');
+          return;
+        }
+        const nextSrc = resolvePlayerAvatarSrc(avatarId, fallbackId);
+        if (imgEl.getAttribute('src') !== nextSrc) {
+          imgEl.src = nextSrc;
+        }
+        imgEl.classList.remove('hidden');
       };
 
       const WORD_GAME_COPY = {
         en: {
           category: 'Theme:',
+          topic: 'Topic:',
           container: 'What fits in:',
           letter: 'Letter',
           letterColon: 'Letter:',
           starts: 'Starts:',
           join: 'and',
+          theLie: 'The lie',
         },
         ro: {
           category: 'Categorie:',
+          topic: 'Categorie:',
           container: 'Ce încape în:',
           letter: 'Literă',
           letterColon: 'Literă:',
           starts: 'Începe:',
           join: 'și',
+          theLie: 'Minciuna',
         },
+      };
+
+      const fitStatementsPrompt = (el) => {
+        if (!el || el.classList.contains('hidden') || !el.classList.contains('statements')) {
+          if (el) el.style.fontSize = '';
+          return;
+        }
+        const maxPx = 22;
+        const minPx = 11;
+        const maxHeight = Math.min(window.innerHeight * 0.42, 320);
+        el.style.maxHeight = `${maxHeight}px`;
+        let size = maxPx;
+        el.style.fontSize = `${size}px`;
+        while (size > minPx && el.scrollHeight > maxHeight + 1) {
+          size -= 1;
+          el.style.fontSize = `${size}px`;
+        }
       };
 
       const capitalizeFirst = (value) => {
@@ -1215,14 +2176,14 @@
 
       const CONTROL_LABELS = {
         ro: {
-          pause: 'Pauza',
-          resume: 'Resume game',
-          endGame: 'Incheie jocul',
-          blockQuestion: 'Blocheaza intrebarea',
-          blockCategory: 'Blocheaza categoria',
-          blockContainer: 'Blocheaza recipientul',
-          blockModifier: 'Blocheaza conditia',
-          blockTopic: 'Blocheaza subiectul',
+          pause: 'Pauză',
+          resume: 'Continuă jocul',
+          endGame: 'Încheie jocul',
+          blockQuestion: 'Blochează întrebarea',
+          blockCategory: 'Blochează categoria',
+          blockContainer: 'Blochează recipientul',
+          blockModifier: 'Blochează condiția',
+          blockTopic: 'Blochează subiectul',
         },
         en: {
           pause: 'Pause',
@@ -1248,6 +2209,11 @@
         canCancelGamePicker: false,
         canKeepCategory: false,
         canMarkWords: false,
+        canBuzz: false,
+        canTypeGuess: false,
+        canBananaGuess: false,
+        canDrunkardPair: false,
+        canMemoriaScore: false,
         scoreIncDec: true,
         gameId: 'trivia',
       };
@@ -1268,8 +2234,15 @@
         gameHudEl.classList.toggle('hidden', !showHud);
         if (!showHud) {
           wordGamePanelEl.classList.add('hidden');
+          if (triviaAnswerPanelEl) triviaAnswerPanelEl.classList.add('hidden');
           if (cateMarkPanelEl) cateMarkPanelEl.classList.add('hidden');
           if (catePlayHintEl) catePlayHintEl.classList.add('hidden');
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
+          if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
+          if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
+          if (bananaPointsBadgeEl) bananaPointsBadgeEl.classList.add('hidden');
+          if (drunkardWordsBadgeEl) drunkardWordsBadgeEl.classList.add('hidden');
           return;
         }
 
@@ -1282,21 +2255,67 @@
         const isFazAuto = gameId === 'last-letter';
         const isSuitcase = gameId === 'ce-incape-in-valiza';
         const isWwts = gameId === 'what-would-they-say';
+        const isFactOrFiction = gameId === 'fact-or-fiction';
+        const isBeep = gameId === 'beep';
         const isCateStii = gameId === 'cate-stii';
+        const isClueRace = gameId === 'clue-race';
+        const isBanana = gameId === 'sunt-o-banana';
+        const isDrunkard = gameId === 'povestea-betivului';
+        const isMemoria = gameId === 'memoria-vitezei';
         const isNoTimerWordGame = isFazAuto || isSuitcase;
         const phase = payload.fazautoPhase || null;
+        if (!isDrunkard && drunkardWordsBadgeEl) {
+          drunkardWordsBadgeEl.classList.add('hidden');
+        }
+        if (!isBanana && bananaPointsBadgeEl) {
+          bananaPointsBadgeEl.classList.add('hidden');
+        }
+        if (!isMemoria && memoriaPanelEl) {
+          memoriaPanelEl.classList.add('hidden');
+        }
         const isKeep = isFazAuto && phase === 'keep_category';
-        const isNextQuestion = isWwts && phase === 'next_question';
+        const isNextQuestion =
+          ((isWwts || isBanana) &&
+            (phase === 'next_question' || (isBanana && phase === 'prep'))) ||
+          (isDrunkard && phase === 'next_round');
         const isCateMarking = isCateStii && phase === 'marking';
+        const isClueWindow = isClueRace && phase === 'clue_window';
+        const isClueTyping = isClueRace && phase === 'typing';
         const letter = payload.letterLabel || '';
         const turnName = payload.turnPlayerName || '';
 
         roundLabelEl.textContent = `${roundWord} ${currentRound} / ${roundsTotal}`;
         setAppLogo(isResults ? 'default' : gameId);
 
+        const isTrivia = gameId === 'trivia';
+        const showTriviaAnswer =
+          isTrivia && Boolean(payload.showAnswer) && Boolean(payload.revealedAnswer);
+        if (triviaAnswerPanelEl) {
+          triviaAnswerPanelEl.classList.toggle('hidden', !showTriviaAnswer);
+          if (showTriviaAnswer) {
+            if (triviaAnswerLabelEl) {
+              triviaAnswerLabelEl.textContent =
+                payload.answerLabel || (lang === 'ro' ? 'Răspuns:' : 'Answer:');
+            }
+            if (triviaAnswerValueEl) {
+              triviaAnswerValueEl.textContent = payload.revealedAnswer || '';
+            }
+          }
+        }
+
         wordGamePanelEl.classList.toggle(
           'hidden',
-          !(isNoTimerWordGame || isNextQuestion || isCateStii)
+          !(
+            isNoTimerWordGame ||
+            isNextQuestion ||
+            isCateStii ||
+            isClueRace ||
+            isBanana ||
+            isDrunkard ||
+            isMemoria ||
+            isFactOrFiction ||
+            isBeep
+          )
         );
         if (cateMarkPanelEl) {
           cateMarkPanelEl.classList.toggle('hidden', !isCateMarking);
@@ -1316,10 +2335,17 @@
         }
 
         if (isCateStii) {
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
+          if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
+          if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
           wordGameKeepEl.classList.add('hidden');
           wordGameHeaderLabelEl.textContent =
             payload.speakerLabel || (lang === 'ro' ? 'Vorbește' : 'Speaking');
           wordGameHeaderValueEl.textContent = turnName || '…';
+          wordGamePromptEl.classList.remove('statements');
+          wordGamePromptEl.style.fontSize = '';
+          wordGamePromptEl.style.maxHeight = '';
           wordGamePromptEl.textContent = payload.themeLabel || '';
           wordGamePromptEl.classList.toggle('hidden', !payload.themeLabel);
           wordGameLetterBlockEl.classList.add('hidden');
@@ -1364,11 +2390,648 @@
               payload.cateMarkedCount ?? marked.filter(Boolean).length
             }/${words.length}`;
           }
+        } else if (isClueRace) {
+          wordGameKeepEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
+          if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
+          if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
+          wordGameHeaderLabelEl.textContent = copy.category;
+          wordGameHeaderValueEl.textContent = payload.themeLabel || '…';
+          wordGamePromptEl.classList.remove('statements');
+          wordGamePromptEl.style.fontSize = '';
+          wordGamePromptEl.style.maxHeight = '';
+          wordGamePromptEl.classList.add('hidden');
+          wordGameLetterBlockEl.classList.add('hidden');
+          wordGameMetaEl.classList.add('hidden');
+          wordGameLetterInlineRowEl.classList.add('hidden');
+          turnHintEl.classList.add('hidden');
+          if (cateMarkPanelEl) cateMarkPanelEl.classList.add('hidden');
+          if (catePlayHintEl) catePlayHintEl.classList.add('hidden');
+
+          if (clueRacePanelEl) {
+            clueRacePanelEl.classList.remove('hidden');
+            const clueLabel = payload.clueLabel || (lang === 'ro' ? 'Indiciu' : 'Clue');
+            const pointsLabel = payload.pointsLabel || (lang === 'ro' ? 'Puncte' : 'Points');
+            const sudden = payload.clueIsSuddenDeath
+              ? ` · ${payload.suddenDeathLabel || (lang === 'ro' ? 'Moarte subită' : 'Sudden death')}`
+              : '';
+            const points =
+              payload.cluePoints > 0 ? ` · ${payload.cluePoints} ${pointsLabel}` : '';
+            clueRaceMetaEl.textContent = `${clueLabel} ${payload.clueIndex || 1}${sudden}${points}`;
+            // Never show the secret answer on the remote during play.
+            clueRaceClueEl.textContent =
+              isClueTyping || phase === 'result' || phase === 'reveal'
+                ? ''
+                : payload.clueText || '';
+            clueRaceClueEl.classList.toggle('hidden', !clueRaceClueEl.textContent);
+
+            const allowed = Array.isArray(payload.clueAllowedBuzz)
+              ? payload.clueAllowedBuzz
+              : ['p1', 'p2', 'both'];
+            const canBuzz = Boolean(payload.canBuzz) && isClueWindow;
+            clueBuzzRowEl.classList.toggle('hidden', !canBuzz);
+            const setBuzzLabel = (btn, text) => {
+              if (!btn) return;
+              let span = btn.querySelector('span');
+              if (!span) {
+                span = document.createElement('span');
+                btn.textContent = '';
+                btn.appendChild(span);
+              }
+              span.textContent = text;
+            };
+            setBuzzLabel(clueBuzzP1Btn, payload.player1Name || 'P1');
+            setBuzzLabel(clueBuzzP2Btn, payload.player2Name || 'P2');
+            setBuzzLabel(
+              clueBuzzBothBtn,
+              payload.buzzBothLabel || (lang === 'ro' ? 'Amândoi' : 'Both')
+            );
+            clueBuzzP1Btn.disabled = !canBuzz || !allowed.includes('p1');
+            clueBuzzP2Btn.disabled = !canBuzz || !allowed.includes('p2');
+            clueBuzzBothBtn.disabled = !canBuzz || !allowed.includes('both');
+
+            const canType = Boolean(payload.canTypeGuess) && isClueTyping;
+            clueTypePanelEl.classList.toggle('hidden', !canType);
+            if (canType) {
+              clueTypeAskEl.textContent =
+                payload.typeGuessAskLabel ||
+                (lang === 'ro' ? 'Tastează răspunsul' : 'Type your guess');
+              clueGuessP1LabelEl.textContent = payload.player1Name || 'Player 1';
+              clueGuessP2LabelEl.textContent = payload.player2Name || 'Player 2';
+              clueGuessP1WrapEl.classList.toggle('hidden', !payload.clueNeedsP1);
+              clueGuessP2WrapEl.classList.toggle('hidden', !payload.clueNeedsP2);
+              if (
+                document.activeElement !== clueGuessP1Input &&
+                payload.clueGuessP1 != null &&
+                clueGuessP1Input.value !== payload.clueGuessP1
+              ) {
+                clueGuessP1Input.value = payload.clueGuessP1;
+              }
+              if (
+                document.activeElement !== clueGuessP2Input &&
+                payload.clueGuessP2 != null &&
+                clueGuessP2Input.value !== payload.clueGuessP2
+              ) {
+                clueGuessP2Input.value = payload.clueGuessP2;
+              }
+              clueSubmitBtn.textContent =
+                payload.submitGuessLabel || (lang === 'ro' ? 'Blochează' : 'Lock in');
+              clueSubmitBtn.disabled = false;
+            }
+          }
+        } else if (isBanana) {
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
+          if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
+          if (cateMarkPanelEl) cateMarkPanelEl.classList.add('hidden');
+          if (catePlayHintEl) catePlayHintEl.classList.add('hidden');
+          wordGameHeaderLabelEl.textContent = '';
+          wordGameHeaderValueEl.textContent = '';
+          wordGamePromptEl.classList.remove('statements');
+          wordGamePromptEl.style.fontSize = '';
+          wordGamePromptEl.style.maxHeight = '';
+          wordGamePromptEl.classList.add('hidden');
+          wordGameLetterBlockEl.classList.add('hidden');
+          wordGameMetaEl.classList.add('hidden');
+          wordGameLetterInlineRowEl.classList.add('hidden');
+          turnHintEl.classList.add('hidden');
+
+          const bananaActive =
+            phase === 'prep' || phase === 'playing' || phase === 'next_question';
+          if (bananaPanelEl) {
+            bananaPanelEl.classList.toggle('hidden', !bananaActive);
+          }
+          if (!bananaActive) {
+            wordGameKeepEl.classList.add('hidden');
+            keepNoBtn.classList.remove('hidden');
+            fazautoActionsEl.classList.remove('single-action');
+            bananaPointsBadgeEl?.classList.add('hidden');
+          } else {
+          bananaPanelEl?.classList.toggle('prep-mode', phase === 'prep');
+          const guideName = payload.bananaGuideName || '…';
+          const seekerName = payload.bananaSeekerName || '…';
+          const guideLabel =
+            payload.guideLabel || (lang === 'ro' ? 'Răspunde' : 'Answers');
+          const seekerLabel =
+            payload.seekerLabel || (lang === 'ro' ? 'Întreabă' : 'Asks');
+
+          const wordRevealed = Boolean(payload.bananaWordRevealed);
+          const categoryRevealed = Boolean(payload.bananaCategoryRevealed);
+          const hintRevealed = Boolean(payload.bananaHintRevealed);
+          const canReveal = Boolean(payload.canBananaReveal);
+          const isPrep = phase === 'prep';
+          const isPlaying = phase === 'playing';
+          const isNext = phase === 'next_question';
+
+          bananaWordLabelEl.textContent =
+            payload.bananaWordLabel || (lang === 'ro' ? 'Cuvânt' : 'Word');
+          bananaCategoryLabelEl.textContent =
+            payload.bananaCategoryLabel || (lang === 'ro' ? 'Categorie' : 'Category');
+          bananaHintLabelEl.textContent =
+            payload.bananaHintLabel || (lang === 'ro' ? 'Indiciu' : 'Hint');
+
+          bananaWordValueEl.textContent = payload.bananaAnswer || '••••';
+          bananaCategoryValueEl.textContent = payload.bananaCategory || '••••';
+          bananaHintValueEl.textContent = payload.bananaHint || '••••';
+          bananaWordValueEl.classList.toggle(
+            'blurred',
+            isPrep ? !bananaWordPeeking : !wordRevealed
+          );
+          bananaCategoryValueEl.classList.toggle('blurred', !categoryRevealed);
+          bananaHintValueEl.classList.toggle('blurred', !hintRevealed);
+
+          bananaWordHintEl.textContent =
+            payload.bananaHoldRevealLabel ||
+            (lang === 'ro' ? 'Ține apăsat ca să vezi' : 'Hold to reveal');
+          bananaCategoryHintEl.textContent =
+            payload.bananaTapRevealLabel ||
+            (lang === 'ro' ? 'Atinge ca să dezvălui' : 'Tap to reveal');
+          bananaHintHintEl.textContent =
+            payload.bananaTapRevealLabel ||
+            (lang === 'ro' ? 'Atinge ca să dezvălui' : 'Tap to reveal');
+          // Prep: hold-to-peek word only. Playing: category + hint, smeared (no overlay hint).
+          bananaWordHintEl.classList.toggle('hidden', true);
+          bananaCategoryHintEl.classList.toggle('hidden', true);
+          bananaHintHintEl.classList.toggle('hidden', true);
+
+          // Keep word card interactive while blurred so hold-to-peek / long-press works.
+          bananaWordCardEl.disabled = false;
+          bananaWordCardEl.classList.toggle('revealed', wordRevealed && !isPrep);
+          bananaWordCardEl.classList.toggle('hidden', !isPrep);
+          if (!isPrep) {
+            bananaWordPeeking = false;
+            bananaWordCardEl.classList.remove('peeking');
+          } else {
+            bananaWordCardEl.classList.toggle('peeking', bananaWordPeeking);
+          }
+          bananaCategoryCardEl.disabled =
+            !canReveal || categoryRevealed || !isPlaying;
+          bananaHintCardEl.disabled =
+            !canReveal || hintRevealed || !isPlaying || !categoryRevealed;
+          // Playing only: category + hint. Prep: word only. Next: neither.
+          bananaCategoryCardEl.classList.toggle('hidden', !isPlaying);
+          bananaHintCardEl.classList.toggle('hidden', !isPlaying);
+          bananaHintCardEl.classList.toggle(
+            'locked',
+            isPlaying && !hintRevealed && !categoryRevealed
+          );
+          bananaWordLabelEl.classList.toggle('hidden', isPrep);
+
+          const canGuess = Boolean(payload.canBananaGuess) && isPlaying;
+          bananaGuessedBtn.textContent =
+            payload.bananaGuessedLabel || (lang === 'ro' ? 'A ghicit!' : 'Guessed!');
+          bananaMissedBtn.textContent =
+            payload.bananaMissedLabel || (lang === 'ro' ? 'Se dă bătut' : 'Give up');
+          bananaGuessedBtn.disabled = !canGuess;
+          bananaMissedBtn.disabled = !canGuess;
+
+          const qLimit = Number(payload.bananaQuestionsLimit) || 0;
+          const qLeftLabel =
+            payload.bananaQuestionsLeftLabel ||
+            (lang === 'ro' ? 'Întrebări rămase' : 'Questions left');
+          const remaining =
+            payload.bananaQuestionsRemaining == null
+              ? qLimit
+              : Number(payload.bananaQuestionsRemaining);
+          if (bananaQuestionsRowEl) {
+            bananaQuestionsRowEl.classList.toggle('hidden', !canGuess);
+          }
+          if (bananaQuestionsLeftEl) {
+            bananaQuestionsLeftEl.textContent =
+              qLimit > 0
+                ? `${qLeftLabel}: ${remaining}`
+                : `${qLeftLabel}: ∞`;
+          }
+          if (bananaPlayActionsEl) {
+            bananaPlayActionsEl.classList.toggle('hidden', !canGuess);
+          }
+          if (bananaMarkQuestionBtn) {
+            bananaMarkQuestionBtn.textContent =
+              payload.bananaMarkQuestionLabel ||
+              (lang === 'ro' ? 'O întrebare a fost pusă' : 'A question was asked');
+            bananaMarkQuestionBtn.disabled =
+              !canGuess || qLimit <= 0 || remaining <= 0;
+            bananaMarkQuestionBtn.classList.toggle('hidden', qLimit <= 0);
+          }
+          if (bananaPointsBadgeEl) {
+            const showPts = canGuess && payload.bananaPotentialPoints != null;
+            bananaPointsBadgeEl.classList.toggle('hidden', !showPts);
+            bananaPointsBadgeEl.setAttribute('aria-hidden', showPts ? 'false' : 'true');
+            if (showPts && bananaPointsValueEl) {
+              bananaPointsValueEl.textContent = String(payload.bananaPotentialPoints);
+            }
+            if (bananaPointsUnitEl) {
+              bananaPointsUnitEl.textContent = lang === 'ro' ? 'pct' : 'pts';
+            }
+          }
+
+          // Banana uses its own proceed CTA (order matches phone). Hide shared keep row.
+          wordGameKeepEl.classList.add('hidden');
+          keepNoBtn.classList.add('hidden');
+
+          const proceedAsk =
+            payload.keepCategoryAskLabel ||
+            (isPrep
+              ? lang === 'ro'
+                ? `${guideName} ai văzut cuvântul?`
+                : `${guideName}, did you see the word?`
+              : lang === 'ro'
+                ? 'Trecem la runda următoare?'
+                : 'Continue to the next round?');
+          const proceedYes =
+            payload.keepCategoryYesLabel ||
+            (isPrep
+              ? lang === 'ro'
+                ? 'Începe runda'
+                : 'Start round'
+              : lang === 'ro'
+                ? 'Continuă'
+                : 'Continue');
+
+          if (bananaPrepAskEl) {
+            bananaPrepAskEl.classList.toggle('hidden', !isPrep);
+            bananaPrepAskEl.textContent = isPrep ? proceedAsk : '';
+          }
+          if (bananaProceedEl) {
+            bananaProceedEl.classList.toggle('hidden', !(isPrep || isNext));
+          }
+          if (bananaProceedAskEl) {
+            // Prep ask sits above the word; next-round ask sits above Continuă.
+            bananaProceedAskEl.textContent = isNext ? proceedAsk : '';
+          }
+          if (bananaProceedBtn) {
+            bananaProceedBtn.textContent = proceedYes;
+            bananaProceedBtn.disabled = !payload.canKeepCategory;
+          }
+
+          if (bananaAnswerRevealEl) {
+            bananaAnswerRevealEl.classList.toggle('hidden', !isNext);
+          }
+          if (isNext && payload.bananaAnswer) {
+            const pts = payload.bananaPointsAwarded;
+            const correctWas =
+              payload.bananaCorrectAnswerWasLabel ||
+              (lang === 'ro' ? 'Răspunsul corect era:' : 'The correct answer was:');
+            if (bananaCorrectWasLabelEl) bananaCorrectWasLabelEl.textContent = correctWas;
+            if (bananaCorrectAnswerEl) {
+              bananaCorrectAnswerEl.textContent =
+                pts != null && pts !== ''
+                  ? `${payload.bananaAnswer} · ${pts} ${lang === 'ro' ? 'pct' : 'pts'}`
+                  : payload.bananaAnswer;
+            }
+          } else {
+            if (bananaCorrectWasLabelEl) bananaCorrectWasLabelEl.textContent = '';
+            if (bananaCorrectAnswerEl) bananaCorrectAnswerEl.textContent = '';
+          }
+
+          if (phase === 'prep' || phase === 'playing') {
+            if (bananaRoleGuideLabelEl) bananaRoleGuideLabelEl.textContent = guideLabel;
+            if (bananaRoleGuideNameEl) bananaRoleGuideNameEl.textContent = guideName;
+            if (bananaRoleSeekerLabelEl) bananaRoleSeekerLabelEl.textContent = seekerLabel;
+            if (bananaRoleSeekerNameEl) bananaRoleSeekerNameEl.textContent = seekerName;
+            bananaRolesEl?.classList.remove('hidden');
+          } else {
+            if (bananaRoleGuideLabelEl) bananaRoleGuideLabelEl.textContent = '';
+            if (bananaRoleGuideNameEl) bananaRoleGuideNameEl.textContent = '';
+            if (bananaRoleSeekerLabelEl) bananaRoleSeekerLabelEl.textContent = '';
+            if (bananaRoleSeekerNameEl) bananaRoleSeekerNameEl.textContent = '';
+            bananaRolesEl?.classList.add('hidden');
+          }
+          }
+        } else if (isDrunkard) {
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
+          if (cateMarkPanelEl) cateMarkPanelEl.classList.add('hidden');
+          if (catePlayHintEl) catePlayHintEl.classList.add('hidden');
+          if (bananaPointsBadgeEl) bananaPointsBadgeEl.classList.add('hidden');
+
+          const starterLabel =
+            payload.drunkardStarterLabel ||
+            (lang === 'ro' ? 'Începe' : 'Starts');
+          const starterName = payload.drunkardStarterName || turnName || '…';
+          wordGameHeaderLabelEl.textContent = `${starterLabel}:`;
+          wordGameHeaderValueEl.textContent = starterName;
+          wordGamePromptEl.classList.remove('statements');
+          wordGamePromptEl.style.fontSize = '';
+          wordGamePromptEl.style.maxHeight = '';
+          wordGamePromptEl.classList.add('hidden');
+          wordGameLetterBlockEl.classList.add('hidden');
+          wordGameMetaEl.classList.add('hidden');
+          wordGameLetterInlineRowEl.classList.add('hidden');
+          turnHintEl.classList.add('hidden');
+
+          const drunkardActive =
+            phase === 'briefing' ||
+            phase === 'playing' ||
+            phase === 'next_round';
+          if (drunkardPanelEl) {
+            drunkardPanelEl.classList.toggle('hidden', !drunkardActive);
+          }
+
+          if (drunkardActive) {
+            if (drunkardStartCaptionEl) {
+              drunkardStartCaptionEl.textContent =
+                payload.drunkardStartCaption ||
+                (lang === 'ro' ? 'Povestea începe cu:' : 'Story starts with:');
+            }
+            if (drunkardEndCaptionEl) {
+              drunkardEndCaptionEl.textContent =
+                payload.drunkardEndCaption ||
+                (lang === 'ro' ? 'Finalul poveștii:' : 'Story ends with:');
+            }
+            const start = payload.drunkardStart || '';
+            const target = payload.drunkardTarget || '';
+            if (drunkardStartWordEl) {
+              drunkardStartWordEl.textContent = start || '…';
+            }
+            if (drunkardEndWordEl) {
+              drunkardEndWordEl.textContent = target || '…';
+            }
+
+            const showBridge = phase !== 'next_round';
+            if (drunkardBridgeEl) {
+              drunkardBridgeEl.classList.toggle('hidden', !showBridge);
+            }
+
+            const canPair = Boolean(payload.canDrunkardPair) && phase === 'playing';
+            if (drunkardActionsEl) {
+              drunkardActionsEl.classList.toggle('hidden', !canPair);
+            }
+            if (drunkardNextBtn) {
+              drunkardNextBtn.textContent =
+                payload.drunkardNextLabel ||
+                (lang === 'ro' ? 'Următorul' : 'Next');
+              drunkardNextBtn.disabled = !canPair;
+            }
+            if (drunkardSkipBtn) {
+              drunkardSkipBtn.textContent =
+                payload.drunkardSkipLabel ||
+                (lang === 'ro' ? 'Sari' : 'Skip');
+              drunkardSkipBtn.disabled = !canPair;
+            }
+
+            const wordsPerPlayer = Number(payload.drunkardWordsPerPlayer) || 0;
+            const showWordsBadge = phase === 'playing';
+            if (drunkardWordsBadgeEl) {
+              drunkardWordsBadgeEl.classList.toggle('hidden', !showWordsBadge);
+              drunkardWordsBadgeEl.setAttribute(
+                'aria-hidden',
+                showWordsBadge ? 'false' : 'true'
+              );
+            }
+            if (showWordsBadge) {
+              if (drunkardWordsValueEl) {
+                drunkardWordsValueEl.textContent =
+                  wordsPerPlayer > 0 ? String(wordsPerPlayer) : '∞';
+              }
+              if (drunkardWordsLabelEl) {
+                drunkardWordsLabelEl.textContent =
+                  wordsPerPlayer > 0
+                    ? payload.drunkardWordsEachLabel ||
+                      (lang === 'ro' ? 'cuvinte fiecare' : 'words each')
+                    : payload.drunkardWordsUnlimitedLabel ||
+                      (lang === 'ro' ? 'nelimitat' : 'unlimited');
+              }
+            }
+
+            if (phase === 'next_round') {
+              wordGameKeepEl.classList.remove('hidden');
+              keepNoBtn.classList.add('hidden');
+              fazautoActionsEl.classList.add('single-action');
+              keepCategoryAskEl.textContent =
+                payload.keepCategoryAskLabel ||
+                (lang === 'ro'
+                  ? 'Trecem la runda următoare?'
+                  : 'Continue to the next round?');
+              keepYesBtn.textContent =
+                payload.keepCategoryYesLabel ||
+                (lang === 'ro' ? 'Continuă' : 'Continue');
+            } else {
+              wordGameKeepEl.classList.add('hidden');
+            }
+          } else {
+            wordGameKeepEl.classList.add('hidden');
+            if (drunkardWordsBadgeEl) drunkardWordsBadgeEl.classList.add('hidden');
+          }
+        } else if (isMemoria) {
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
+          if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
+          if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
+          if (cateMarkPanelEl) cateMarkPanelEl.classList.add('hidden');
+          if (catePlayHintEl) catePlayHintEl.classList.add('hidden');
+          if (bananaPointsBadgeEl) bananaPointsBadgeEl.classList.add('hidden');
+          if (drunkardWordsBadgeEl) drunkardWordsBadgeEl.classList.add('hidden');
+
+          const modeLabel =
+            payload.memoriaMode === 'memory'
+              ? lang === 'ro'
+                ? 'Memorie'
+                : 'Memory'
+              : lang === 'ro'
+                ? 'Viteză'
+                : 'Speed';
+          wordGameHeaderLabelEl.textContent =
+            (lang === 'ro' ? 'Mod' : 'Mode') + ':';
+          wordGameHeaderValueEl.textContent = modeLabel;
+          wordGamePromptEl.classList.add('hidden');
+          wordGameLetterBlockEl.classList.add('hidden');
+          wordGameMetaEl.classList.add('hidden');
+          wordGameLetterInlineRowEl.classList.add('hidden');
+          turnHintEl.classList.add('hidden');
+          wordGameKeepEl.classList.add('hidden');
+
+          const memoriaActive =
+            phase === 'briefing' ||
+            phase === 'listening' ||
+            phase === 'recalling' ||
+            phase === 'scoring';
+          if (memoriaPanelEl) {
+            memoriaPanelEl.classList.toggle('hidden', !memoriaActive);
+          }
+
+          if (memoriaActive) {
+            const isScoring = phase === 'scoring';
+            const words = Array.isArray(payload.memoriaWords)
+              ? payload.memoriaWords
+              : [];
+            const remembered = Number(payload.memoriaRememberedCount) || 0;
+            const wordCount = Number(payload.memoriaWordCount) || words.length || 0;
+
+            if (memoriaHintEl) {
+              if (isScoring) {
+                memoriaHintEl.textContent =
+                  payload.memoriaScoreAskLabel ||
+                  (lang === 'ro' ? 'Câte ați ținut minte?' : 'How many did you remember?');
+              } else if (phase === 'recalling') {
+                memoriaHintEl.textContent =
+                  payload.memoriaRecallHintLabel ||
+                  (lang === 'ro'
+                    ? 'Reconstituiți lista cu voce tare'
+                    : 'Reconstruct the list aloud');
+              } else {
+                memoriaHintEl.textContent =
+                  payload.memoriaListenHintLabel ||
+                  (lang === 'ro' ? 'Ascultă…' : 'Listen…');
+              }
+            }
+
+            if (memoriaWordsCaptionEl) {
+              memoriaWordsCaptionEl.textContent =
+                payload.memoriaWordsLabel ||
+                (lang === 'ro' ? 'Cuvintele au fost:' : 'The words were:');
+              memoriaWordsCaptionEl.classList.toggle('hidden', !isScoring);
+            }
+            if (memoriaWordsEl) {
+              memoriaWordsEl.innerHTML = '';
+              if (isScoring) {
+                words.forEach((word, index) => {
+                  const row = document.createElement('div');
+                  row.textContent = `${index + 1}. ${word}`;
+                  memoriaWordsEl.appendChild(row);
+                });
+              }
+              memoriaWordsEl.classList.toggle('hidden', !isScoring);
+              memoriaWordsEl.classList.toggle('dense', words.length > 11);
+            }
+            if (memoriaStepperEl) {
+              memoriaStepperEl.classList.toggle('hidden', !isScoring);
+            }
+            if (memoriaStepperValueEl) {
+              memoriaStepperValueEl.textContent = `${remembered}/${wordCount}`;
+            }
+            if (memoriaStepperLabelEl) {
+              memoriaStepperLabelEl.textContent =
+                payload.memoriaRememberedLabel ||
+                (lang === 'ro' ? 'Reținute' : 'Remembered');
+            }
+            if (memoriaConfirmRowEl) {
+              memoriaConfirmRowEl.classList.toggle('hidden', !isScoring);
+            }
+            if (memoriaConfirmBtn) {
+              memoriaConfirmBtn.textContent =
+                payload.memoriaScoreConfirmLabel ||
+                (lang === 'ro' ? 'Continuă' : 'Continue');
+              memoriaConfirmBtn.disabled = !Boolean(payload.canMemoriaScore);
+            }
+            if (memoriaDecBtn) memoriaDecBtn.disabled = !Boolean(payload.canMemoriaScore);
+            if (memoriaIncBtn) memoriaIncBtn.disabled = !Boolean(payload.canMemoriaScore);
+          }
+        } else if (isFactOrFiction) {
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
+          if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
+          if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
+          if (cateMarkPanelEl) cateMarkPanelEl.classList.add('hidden');
+          if (catePlayHintEl) catePlayHintEl.classList.add('hidden');
+
+          wordGameLetterBlockEl.classList.add('hidden');
+          wordGameMetaEl.classList.add('hidden');
+          wordGameLetterInlineRowEl.classList.add('hidden');
+          turnHintEl.classList.add('hidden');
+          turnHintEl.textContent = '';
+
+          const isReveal = phase === 'next_question';
+          if (isReveal) {
+            wordGameHeaderLabelEl.textContent = copy.theLie;
+            wordGameHeaderValueEl.textContent = '';
+            wordGamePromptEl.classList.remove('statements');
+            wordGamePromptEl.style.fontSize = '';
+            wordGamePromptEl.style.maxHeight = '';
+            wordGamePromptEl.textContent =
+              payload.falseRevealLabel || payload.questionLabel || '';
+            wordGamePromptEl.classList.toggle(
+              'hidden',
+              !wordGamePromptEl.textContent
+            );
+            wordGameKeepEl.classList.remove('hidden');
+            keepNoBtn.classList.add('hidden');
+            fazautoActionsEl.classList.add('single-action');
+            keepCategoryAskEl.textContent =
+              payload.keepCategoryAskLabel ||
+              (lang === 'ro' ? 'Trecem la următoarea?' : 'Next question?');
+            keepYesBtn.textContent =
+              payload.keepCategoryYesLabel ||
+              (lang === 'ro' ? 'Continuă' : 'Continue');
+          } else {
+            wordGameHeaderLabelEl.textContent = copy.topic;
+            wordGameHeaderValueEl.textContent = payload.themeLabel || '';
+            const statements = Array.isArray(payload.statements)
+              ? payload.statements
+              : [];
+            const statementsText =
+              statements.length > 0
+                ? statements
+                    .map((statement, index) => `${index + 1}. ${statement}`)
+                    .join('\n')
+                : payload.questionLabel || '';
+            wordGamePromptEl.classList.add('statements');
+            wordGamePromptEl.textContent = statementsText;
+            wordGamePromptEl.classList.toggle('hidden', !statementsText);
+            wordGameKeepEl.classList.add('hidden');
+            keepNoBtn.classList.remove('hidden');
+            fazautoActionsEl.classList.remove('single-action');
+            requestAnimationFrame(() => fitStatementsPrompt(wordGamePromptEl));
+          }
+        } else if (isBeep) {
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
+          if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
+          if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
+          if (cateMarkPanelEl) cateMarkPanelEl.classList.add('hidden');
+          if (catePlayHintEl) catePlayHintEl.classList.add('hidden');
+
+          wordGameLetterBlockEl.classList.add('hidden');
+          wordGameMetaEl.classList.add('hidden');
+          wordGameLetterInlineRowEl.classList.add('hidden');
+          turnHintEl.classList.add('hidden');
+          turnHintEl.textContent = '';
+          wordGameKeepEl.classList.add('hidden');
+          keepNoBtn.classList.remove('hidden');
+          fazautoActionsEl.classList.remove('single-action');
+
+          const isReveal = phase === 'reveal';
+          if (isReveal) {
+            wordGameHeaderLabelEl.textContent =
+              lang === 'ro' ? 'Răspuns' : 'Answer';
+            wordGameHeaderValueEl.textContent = '';
+            wordGamePromptEl.classList.remove('statements');
+            wordGamePromptEl.style.fontSize = '';
+            wordGamePromptEl.style.maxHeight = '';
+            wordGamePromptEl.textContent =
+              payload.beepRevealLabel || payload.questionLabel || '';
+            wordGamePromptEl.classList.toggle(
+              'hidden',
+              !wordGamePromptEl.textContent
+            );
+          } else {
+            wordGameHeaderLabelEl.textContent =
+              lang === 'ro' ? 'Seria' : 'Series';
+            wordGameHeaderValueEl.textContent = '';
+            wordGamePromptEl.classList.remove('statements');
+            wordGamePromptEl.style.fontSize = '';
+            wordGamePromptEl.style.maxHeight = '';
+            wordGamePromptEl.textContent = payload.questionLabel || '';
+            wordGamePromptEl.classList.toggle(
+              'hidden',
+              !wordGamePromptEl.textContent
+            );
+          }
         } else if (isNextQuestion) {
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
+          if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
+          if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
           wordGameHeaderLabelEl.textContent = lang === 'ro' ? 'Întrebare' : 'Question';
           wordGameHeaderValueEl.textContent = '';
+          wordGamePromptEl.classList.remove('statements');
+          wordGamePromptEl.style.fontSize = '';
+          wordGamePromptEl.style.maxHeight = '';
           wordGamePromptEl.textContent = payload.questionLabel || '';
-          wordGamePromptEl.classList.toggle('hidden', !payload.questionLabel);
+          wordGamePromptEl.classList.toggle(
+            'hidden',
+            !wordGamePromptEl.textContent
+          );
           wordGameLetterBlockEl.classList.add('hidden');
           wordGameMetaEl.classList.add('hidden');
           wordGameLetterInlineRowEl.classList.add('hidden');
@@ -1380,11 +3043,16 @@
             (lang === 'ro' ? 'Trecem la următoarea?' : 'Next question?');
           // Fall through to trivia-style countdown ring (usually 0 between questions)
         } else if (isNoTimerWordGame) {
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
           if (isSuitcase) {
             wordGameKeepEl.classList.add('hidden');
             wordGameHeaderLabelEl.textContent = copy.container;
             wordGameHeaderValueEl.textContent = '';
             const prompt = buildSuitcasePrompt(payload, copy.join);
+            wordGamePromptEl.classList.remove('statements');
+            wordGamePromptEl.style.fontSize = '';
+            wordGamePromptEl.style.maxHeight = '';
             wordGamePromptEl.textContent = prompt;
             wordGamePromptEl.classList.toggle('hidden', !prompt || isKeep);
             wordGameLetterBlockEl.classList.add('hidden');
@@ -1404,6 +3072,9 @@
           } else {
             wordGameHeaderLabelEl.textContent = copy.category;
             wordGameHeaderValueEl.textContent = payload.themeLabel || '…';
+            wordGamePromptEl.classList.remove('statements');
+            wordGamePromptEl.style.fontSize = '';
+            wordGamePromptEl.style.maxHeight = '';
             wordGamePromptEl.classList.add('hidden');
             wordGamePromptEl.textContent = '';
             if (isKeep) {
@@ -1434,11 +3105,40 @@
             }
           }
         } else {
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
+          if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
+          if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
           wordGameKeepEl.classList.add('hidden');
         }
 
         const paused = Boolean(payload.isPaused);
-        if (isNoTimerWordGame) {
+        const isBananaPrep = isBanana && phase === 'prep';
+        const hideBananaTimer = isBanana && phase !== 'playing';
+        const hideDrunkardTimer =
+          isDrunkard && phase !== 'playing';
+        const hideMemoriaTimer =
+          isMemoria && phase !== 'recalling';
+        if (
+          isNoTimerWordGame ||
+          (isClueRace && isClueTyping) ||
+          isBananaPrep ||
+          hideBananaTimer ||
+          hideDrunkardTimer ||
+          hideMemoriaTimer
+        ) {
+          if (
+            (isClueRace && isClueTyping) ||
+            isBananaPrep ||
+            hideBananaTimer ||
+            hideDrunkardTimer ||
+            hideMemoriaTimer
+          ) {
+            timerSvgEl.classList.add('hidden');
+            timerLabelEl.classList.add('hidden');
+            infiniteTimerEl.classList.add('hidden');
+            return;
+          }
           timerSvgEl.classList.add('hidden');
           timerLabelEl.classList.add('hidden');
           infiniteTimerEl.classList.remove('hidden');
@@ -1450,7 +3150,14 @@
         timerLabelEl.classList.remove('hidden');
         infiniteTimerEl.classList.add('hidden');
 
-        const answerTime = payload.answerTimeSec || 10;
+        const answerTime =
+          Number(payload.answerTimeSec) > 0
+            ? Number(payload.answerTimeSec)
+            : isDrunkard
+              ? 60
+              : isBanana
+                ? 300
+                : 10;
         const countdown = payload.countdownSec ?? 0;
         const progress =
           countdown > 0 && answerTime > 0 ? Math.max(0, Math.min(1, countdown / answerTime)) : 0;
@@ -1532,31 +3239,86 @@
           !isPickGame && (payload.screen === 'results' || Boolean(payload.canPlayAgain));
         const isFazAuto = payload.gameId === 'last-letter';
         const isWwts = payload.gameId === 'what-would-they-say';
+        const isFactOrFiction = payload.gameId === 'fact-or-fiction';
+        const isBeep = payload.gameId === 'beep';
         const isCateStii = payload.gameId === 'cate-stii';
+        const isClueRace = payload.gameId === 'clue-race';
+        const isBanana = payload.gameId === 'sunt-o-banana';
+        const isDrunkard = payload.gameId === 'povestea-betivului';
+        const isMemoria = payload.gameId === 'memoria-vitezei';
+        const isCoop = payload.scoringMode === 'coop' || isDrunkard || isMemoria;
         const isNoTimerWordGame =
           payload.gameId === 'last-letter' || payload.gameId === 'ce-incape-in-valiza';
         const canKeep = Boolean(payload.canKeepCategory);
         const canMarkWords = Boolean(payload.canMarkWords);
+        const canBuzz = Boolean(payload.canBuzz);
+        const canTypeGuess = Boolean(payload.canTypeGuess);
+        const canBananaGuess = Boolean(payload.canBananaGuess);
+        const canDrunkardPair = Boolean(payload.canDrunkardPair);
+        const canMemoriaScore = Boolean(payload.canMemoriaScore);
 
         setAppLogo(isPickGame ? 'default' : payload.gameId || 'default');
 
-        p1NameEl.textContent = payload.player1Name || 'Player 1';
-        p2NameEl.textContent = payload.player2Name || 'Player 2';
-        p1ScoreEl.textContent = String(payload.score1 ?? 0);
-        p2ScoreEl.textContent = String(payload.score2 ?? 0);
+        if (isCoop) {
+          const teamName = `${payload.player1Name || 'Player 1'} & ${
+            payload.player2Name || 'Player 2'
+          }`;
+          p1NameEl.textContent = teamName;
+          p1ScoreEl.textContent = String(
+            payload.teamScore ?? payload.score1 ?? 0
+          );
+          p2NameEl.textContent = '';
+          p2ScoreEl.textContent = '0';
+          setScoreAvatar(p1AvatarLeftEl, payload.player1AvatarId, 'players_1');
+          setScoreAvatar(p1AvatarEl, payload.player2AvatarId, 'players_2');
+          setScoreAvatar(p2AvatarEl, null, 'players_2', { hidden: true });
+          finalScoresLabelEl.textContent =
+            payload.drunkardTeamScoreLabel ||
+            payload.finalScoresLabel ||
+            'Team score';
+          if (p1ScoreSubtitleEl) {
+            p1ScoreSubtitleEl.textContent =
+              payload.drunkardTeamScoreLabel ||
+              (payload.appLanguage === 'ro' ? 'Punctaj echipă' : 'Team score');
+            p1ScoreSubtitleEl.classList.toggle('hidden', isResults || isPickGame);
+          }
+        } else {
+          p1NameEl.textContent = payload.player1Name || 'Player 1';
+          p2NameEl.textContent = payload.player2Name || 'Player 2';
+          p1ScoreEl.textContent = String(payload.score1 ?? 0);
+          p2ScoreEl.textContent = String(payload.score2 ?? 0);
+          setScoreAvatar(p1AvatarLeftEl, null, 'players_1', { hidden: true });
+          setScoreAvatar(p1AvatarEl, payload.player1AvatarId, 'players_1');
+          setScoreAvatar(p2AvatarEl, payload.player2AvatarId, 'players_2');
+          finalScoresLabelEl.textContent =
+            payload.finalScoresLabel || 'Final Scores';
+          if (p1ScoreSubtitleEl) {
+            p1ScoreSubtitleEl.textContent = '';
+            p1ScoreSubtitleEl.classList.add('hidden');
+          }
+        }
 
         gameOverLabelEl.textContent = payload.gameOverLabel || 'Game Over';
-        finalScoresLabelEl.textContent = payload.finalScoresLabel || 'Final Scores';
         playAgainTextEl.textContent = payload.playAgainLabel || 'Play Again';
         changeGameTextEl.textContent = payload.changeGameLabel || 'Change game';
         pickGameTitleEl.textContent = payload.hubTitle || 'Car Games';
         pickGameBackBtn.textContent = payload.backToResultsLabel || 'Back to results';
 
-        p1WinEl.classList.toggle('hidden', !isResults || payload.winner !== 'p1');
-        p2WinEl.classList.toggle('hidden', !isResults || payload.winner !== 'p2');
+        p1WinEl.classList.toggle(
+          'hidden',
+          !isResults || isCoop || payload.winner !== 'p1'
+        );
+        p2WinEl.classList.toggle(
+          'hidden',
+          !isResults || isCoop || payload.winner !== 'p2'
+        );
 
         scoreRowEl.classList.toggle('results-mode', isResults);
+        scoreRowEl.classList.toggle('coop-mode', isCoop);
         scoreRowEl.classList.toggle('hidden', isPickGame);
+        if (scoreCardP2El) {
+          scoreCardP2El.classList.toggle('coop-hidden', isCoop);
+        }
 
         resultsHeadEl.classList.toggle('hidden', !isResults);
         gameControlsEl.classList.toggle('hidden', isResults || isPickGame);
@@ -1579,12 +3341,19 @@
           canCancelGamePicker: Boolean(payload.canCancelGamePicker),
           canKeepCategory: canKeep,
           canMarkWords,
+          canBuzz,
+          canTypeGuess,
+          canBananaGuess,
+          canDrunkardPair,
+          canMemoriaScore,
           scoreIncDec: Boolean(payload.scoreIncDec),
           gameId: payload.gameId || 'trivia',
+          scoringMode: isCoop ? 'coop' : 'versus',
         };
 
         changeGameBtn.disabled = !remoteState.canChangeGame;
         pickGameBackBtn.disabled = !remoteState.canCancelGamePicker;
+        pickGameBackBtn.classList.toggle('hidden', !remoteState.canCancelGamePicker);
         pauseBtn.disabled = !remoteState.canPause;
         stopBtn.disabled = !remoteState.canStop;
         blockBtn.disabled = !remoteState.canBlockQuestion;
@@ -1594,28 +3363,57 @@
             isResults ||
               isPickGame ||
               isWwts ||
+              (isFactOrFiction && payload.fazautoPhase !== 'playing') ||
+              (isBeep &&
+                payload.fazautoPhase !== 'listening' &&
+                payload.fazautoPhase !== 'beep' &&
+                payload.fazautoPhase !== 'playing') ||
+              (isBanana &&
+                payload.fazautoPhase !== 'prep' &&
+                payload.fazautoPhase !== 'playing') ||
+              (isDrunkard && payload.fazautoPhase !== 'playing') ||
+              isMemoria ||
+              (isClueRace &&
+                payload.fazautoPhase !== 'clue_window' &&
+                payload.fazautoPhase !== 'typing') ||
               (isCateStii && payload.fazautoPhase !== 'playing')
           );
         }
 
         const showScoreControls = remoteState.scoreIncDec && !isResults && !isPickGame;
         scoreBtns.forEach((btn) => {
-          btn.classList.toggle('hidden', !showScoreControls);
-          btn.disabled = !showScoreControls;
+          const action = btn.getAttribute('data-action') || '';
+          const isP2Btn = action.endsWith('_p2');
+          const hide = !showScoreControls || (isCoop && isP2Btn);
+          btn.classList.toggle('hidden', hide);
+          btn.disabled = hide;
         });
 
         fazautoActionsEl.classList.toggle(
           'hidden',
-          (!isFazAuto && !isWwts) || isResults || isPickGame || !canKeep
+          (!isFazAuto &&
+            !isWwts &&
+            !isFactOrFiction &&
+            !isBanana &&
+            !isDrunkard) ||
+            isResults ||
+            isPickGame ||
+            !canKeep
         );
         wordGameKeepEl.classList.toggle(
           'hidden',
-          (!isFazAuto && !isWwts) ||
+          (!isFazAuto &&
+            !isWwts &&
+            !isFactOrFiction &&
+            !isBanana &&
+            !isDrunkard) ||
             isResults ||
             isPickGame ||
             !canKeep ||
             (payload.fazautoPhase !== 'keep_category' &&
-              payload.fazautoPhase !== 'next_question')
+              payload.fazautoPhase !== 'next_question' &&
+              payload.fazautoPhase !== 'prep' &&
+              payload.fazautoPhase !== 'next_round')
         );
         if (cateMarkPanelEl) {
           cateMarkPanelEl.classList.toggle(
@@ -1632,9 +3430,18 @@
         keepNoBtn.textContent = payload.keepCategoryNoLabel || 'No — new category';
         keepYesBtn.disabled = !canKeep;
         keepNoBtn.disabled = !canKeep;
-        keepNoBtn.classList.toggle('hidden', isWwts || isCateStii);
-        fazautoActionsEl.classList.toggle('single-action', isWwts);
-        keepYesBtn.classList.toggle('medium-cta', isWwts);
+        keepNoBtn.classList.toggle(
+          'hidden',
+          isWwts || isFactOrFiction || isCateStii || isBanana || isDrunkard
+        );
+        fazautoActionsEl.classList.toggle(
+          'single-action',
+          isWwts || isFactOrFiction || isBanana || isDrunkard
+        );
+        keepYesBtn.classList.toggle(
+          'medium-cta',
+          isWwts || isFactOrFiction || isBanana || isDrunkard
+        );
         if (cateConfirmBtn) {
           cateConfirmBtn.disabled = !canMarkWords;
         }
@@ -1650,6 +3457,28 @@
               ? labels.blockModifier || 'Block rule'
               : payload.gameId === 'cate-stii'
                 ? labels.blockTopic || 'Block topic'
+                : payload.gameId === 'clue-race'
+                  ? payload.blockQuestionLabel ||
+                    (payload.appLanguage === 'ro'
+                      ? 'Blochează răspunsul'
+                      : 'Block answer')
+                  : payload.gameId === 'fact-or-fiction'
+                    ? labels.blockTopic || 'Block set'
+                    : payload.gameId === 'beep'
+                      ? payload.blockQuestionLabel ||
+                        (payload.appLanguage === 'ro'
+                          ? 'Blochează seria'
+                          : 'Block series')
+                    : payload.gameId === 'sunt-o-banana'
+                      ? payload.blockQuestionLabel ||
+                        (payload.appLanguage === 'ro'
+                          ? 'Blochează cuvântul'
+                          : 'Block word')
+                      : payload.gameId === 'povestea-betivului'
+                        ? payload.blockQuestionLabel ||
+                          (payload.appLanguage === 'ro'
+                            ? 'Blochează perechea'
+                            : 'Block pair')
               : labels.blockQuestion);
 
         pauseIcon.src = remoteState.isPaused
@@ -1691,6 +3520,166 @@
         cateConfirmBtn.addEventListener('click', () => {
           if (!remoteState.canMarkWords) return;
           sendCommand('confirm_cate_marks');
+          if (navigator.vibrate) navigator.vibrate(20);
+        });
+      }
+
+      if (clueBuzzP1Btn) {
+        clueBuzzP1Btn.addEventListener('click', () => {
+          if (!remoteState.canBuzz) return;
+          sendCommand('buzz_p1');
+          if (navigator.vibrate) navigator.vibrate(25);
+        });
+      }
+      if (clueBuzzP2Btn) {
+        clueBuzzP2Btn.addEventListener('click', () => {
+          if (!remoteState.canBuzz) return;
+          sendCommand('buzz_p2');
+          if (navigator.vibrate) navigator.vibrate(25);
+        });
+      }
+      if (clueBuzzBothBtn) {
+        clueBuzzBothBtn.addEventListener('click', () => {
+          if (!remoteState.canBuzz) return;
+          sendCommand('buzz_both');
+          if (navigator.vibrate) navigator.vibrate(25);
+        });
+      }
+      if (clueSubmitBtn) {
+        clueSubmitBtn.addEventListener('click', () => {
+          if (!remoteState.canTypeGuess) return;
+          sendCommand('submit_guess', {
+            guessP1: clueGuessP1Input?.value || '',
+            guessP2: clueGuessP2Input?.value || '',
+          });
+          if (navigator.vibrate) navigator.vibrate(20);
+        });
+      }
+
+      const bindLongPress = (el, action) => {
+        if (!el) return;
+        let timer = null;
+        const clear = () => {
+          if (timer) clearTimeout(timer);
+          timer = null;
+        };
+        const isPrepMode = () =>
+          bananaPanelEl?.classList.contains('prep-mode');
+        const setPeek = (peeking) => {
+          if (!bananaWordValueEl) return;
+          bananaWordPeeking = peeking;
+          el.classList.toggle('peeking', peeking);
+          if (el.classList.contains('revealed')) {
+            bananaWordValueEl.classList.remove('blurred');
+            return;
+          }
+          bananaWordValueEl.classList.toggle('blurred', !peeking);
+        };
+        const start = (e) => {
+          if (isPrepMode()) {
+            setPeek(true);
+            if (navigator.vibrate) navigator.vibrate(15);
+            return;
+          }
+          if (el.classList.contains('revealed')) return;
+          clear();
+          timer = setTimeout(() => {
+            sendCommand(action);
+            if (navigator.vibrate) navigator.vibrate(30);
+            clear();
+          }, 400);
+        };
+        const end = () => {
+          if (isPrepMode()) {
+            setPeek(false);
+          }
+          clear();
+        };
+        el.addEventListener('touchstart', start, { passive: true });
+        el.addEventListener('mousedown', start);
+        el.addEventListener('touchend', end);
+        el.addEventListener('touchcancel', end);
+        el.addEventListener('mouseup', end);
+        el.addEventListener('mouseleave', end);
+        el.addEventListener('contextmenu', (e) => e.preventDefault());
+      };
+
+      bindLongPress(bananaWordCardEl, 'banana_reveal_word');
+
+      if (bananaCategoryCardEl) {
+        bananaCategoryCardEl.addEventListener('click', () => {
+          if (bananaCategoryCardEl.disabled) return;
+          sendCommand('banana_reveal_category');
+          if (navigator.vibrate) navigator.vibrate(15);
+        });
+      }
+      if (bananaHintCardEl) {
+        bananaHintCardEl.addEventListener('click', () => {
+          if (bananaHintCardEl.disabled) return;
+          sendCommand('banana_reveal_hint');
+          if (navigator.vibrate) navigator.vibrate(15);
+        });
+      }
+      if (bananaGuessedBtn) {
+        bananaGuessedBtn.addEventListener('click', () => {
+          if (!remoteState.canBananaGuess) return;
+          sendCommand('banana_guessed');
+          if (navigator.vibrate) navigator.vibrate(25);
+        });
+      }
+      if (bananaMissedBtn) {
+        bananaMissedBtn.addEventListener('click', () => {
+          if (!remoteState.canBananaGuess) return;
+          sendCommand('banana_missed');
+          if (navigator.vibrate) navigator.vibrate(25);
+        });
+      }
+      if (bananaMarkQuestionBtn) {
+        bananaMarkQuestionBtn.addEventListener('click', () => {
+          if (!remoteState.canBananaGuess) return;
+          sendCommand('banana_mark_question');
+          if (navigator.vibrate) navigator.vibrate(15);
+        });
+      }
+      if (bananaProceedBtn) {
+        bananaProceedBtn.addEventListener('click', () => {
+          if (!remoteState.canKeepCategory) return;
+          sendCommand('keep_category_yes');
+          if (navigator.vibrate) navigator.vibrate(20);
+        });
+      }
+      if (drunkardNextBtn) {
+        drunkardNextBtn.addEventListener('click', () => {
+          if (!remoteState.canDrunkardPair) return;
+          sendCommand('drunkard_next');
+          if (navigator.vibrate) navigator.vibrate(25);
+        });
+      }
+      if (drunkardSkipBtn) {
+        drunkardSkipBtn.addEventListener('click', () => {
+          if (!remoteState.canDrunkardPair) return;
+          sendCommand('drunkard_skip');
+          if (navigator.vibrate) navigator.vibrate(25);
+        });
+      }
+      if (memoriaDecBtn) {
+        memoriaDecBtn.addEventListener('click', () => {
+          if (!remoteState.canMemoriaScore) return;
+          sendCommand('memoria_remembered_dec');
+          if (navigator.vibrate) navigator.vibrate(15);
+        });
+      }
+      if (memoriaIncBtn) {
+        memoriaIncBtn.addEventListener('click', () => {
+          if (!remoteState.canMemoriaScore) return;
+          sendCommand('memoria_remembered_inc');
+          if (navigator.vibrate) navigator.vibrate(15);
+        });
+      }
+      if (memoriaConfirmBtn) {
+        memoriaConfirmBtn.addEventListener('click', () => {
+          if (!remoteState.canMemoriaScore) return;
+          sendCommand('memoria_score_confirm');
           if (navigator.vibrate) navigator.vibrate(20);
         });
       }
