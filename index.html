@@ -393,13 +393,17 @@
       }
 
       .score-avatar.hidden {
-        display: none;
+        display: none !important;
       }
 
       .score-controls {
         display: flex;
         align-items: center;
         gap: 10px;
+      }
+
+      .score-btn.hidden {
+        display: none !important;
       }
 
       .score-value {
@@ -452,19 +456,43 @@
       }
 
       .score-row.results-mode .score-card {
+        gap: 10px;
+        padding-top: 18px;
+        padding-bottom: 18px;
+      }
+
+      /* Results: avatar above name, larger — same for all games */
+      .score-row.results-mode:not(.coop-mode) .score-name-row {
+        flex-direction: column;
         gap: 8px;
+      }
+
+      .score-row.results-mode:not(.coop-mode) .score-avatar:not(.hidden) {
+        order: -1;
+        width: 72px;
+        height: calc(56px * 376 / 328);
+      }
+
+      .score-row.results-mode.coop-mode .score-name-row {
+        flex-direction: row;
+        gap: 8px;
+      }
+
+      .score-row.results-mode.coop-mode .score-avatar:not(.hidden) {
+        width: 56px;
+        height: calc(44px * 376 / 328);
       }
 
       .win-badge-slot {
         display: none;
-        min-height: calc(48px * (106 / 146) + 8px);
         align-items: center;
         justify-content: center;
         width: 100%;
       }
 
-      .score-row.results-mode .win-badge-slot {
+      .score-row.results-mode .win-badge-slot.has-winner {
         display: flex;
+        min-height: calc(48px * (106 / 146) + 8px);
       }
 
       .win-badge {
@@ -532,10 +560,47 @@
         color: var(--text);
       }
 
+      .word-game-header.hidden {
+        display: none;
+      }
+
       .word-game-header-value {
         flex: 1;
         min-width: 0;
         font-weight: 900;
+      }
+
+      .wwts-roles {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        width: 100%;
+      }
+
+      .wwts-roles.hidden {
+        display: none;
+      }
+
+      .wwts-role {
+        min-width: 0;
+        text-align: center;
+      }
+
+      .wwts-role-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--text-muted);
+      }
+
+      .wwts-role-name {
+        display: block;
+        font-size: 16px;
+        font-weight: 900;
+        color: var(--text);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .word-game-prompt {
@@ -1578,6 +1643,16 @@
               <span id="word-game-header-label"></span>
               <span id="word-game-header-value" class="word-game-header-value"></span>
             </div>
+            <div id="wwts-roles" class="wwts-roles hidden">
+              <div class="wwts-role">
+                <span id="wwts-guesser-label" class="wwts-role-label"></span>
+                <span id="wwts-guesser-name" class="wwts-role-name"></span>
+              </div>
+              <div class="wwts-role">
+                <span id="wwts-subject-label" class="wwts-role-label"></span>
+                <span id="wwts-subject-name" class="wwts-role-name"></span>
+              </div>
+            </div>
             <div id="word-game-prompt" class="word-game-prompt hidden"></div>
             <div id="word-game-letter-block" class="word-game-letter-block hidden">
               <div id="word-game-letter-caption" class="word-game-letter-caption"></div>
@@ -1875,8 +1950,14 @@
       const p1ScoreSubtitleEl = document.getElementById('p1-score-subtitle');
       const appLogoEl = document.getElementById('app-logo');
       const wordGamePanelEl = document.getElementById('word-game-panel');
+      const wordGameHeaderEl = document.getElementById('word-game-header');
       const wordGameHeaderLabelEl = document.getElementById('word-game-header-label');
       const wordGameHeaderValueEl = document.getElementById('word-game-header-value');
+      const wwtsRolesEl = document.getElementById('wwts-roles');
+      const wwtsGuesserLabelEl = document.getElementById('wwts-guesser-label');
+      const wwtsGuesserNameEl = document.getElementById('wwts-guesser-name');
+      const wwtsSubjectLabelEl = document.getElementById('wwts-subject-label');
+      const wwtsSubjectNameEl = document.getElementById('wwts-subject-name');
       const wordGamePromptEl = document.getElementById('word-game-prompt');
       const wordGameLetterBlockEl = document.getElementById('word-game-letter-block');
       const wordGameLetterCaptionEl = document.getElementById('word-game-letter-caption');
@@ -2081,12 +2162,14 @@
         if (hidden) {
           imgEl.classList.add('hidden');
           imgEl.removeAttribute('src');
+          imgEl.alt = '';
           return;
         }
         const nextSrc = resolvePlayerAvatarSrc(avatarId, fallbackId);
         if (imgEl.getAttribute('src') !== nextSrc) {
           imgEl.src = nextSrc;
         }
+        imgEl.alt = '';
         imgEl.classList.remove('hidden');
       };
 
@@ -2234,6 +2317,7 @@
         gameHudEl.classList.toggle('hidden', !showHud);
         if (!showHud) {
           wordGamePanelEl.classList.add('hidden');
+          if (wwtsRolesEl) wwtsRolesEl.classList.add('hidden');
           if (triviaAnswerPanelEl) triviaAnswerPanelEl.classList.add('hidden');
           if (cateMarkPanelEl) cateMarkPanelEl.classList.add('hidden');
           if (catePlayHintEl) catePlayHintEl.classList.add('hidden');
@@ -2307,6 +2391,7 @@
           'hidden',
           !(
             isNoTimerWordGame ||
+            isWwts ||
             isNextQuestion ||
             isCateStii ||
             isClueRace ||
@@ -2317,6 +2402,12 @@
             isBeep
           )
         );
+        if (!isWwts && wwtsRolesEl) {
+          wwtsRolesEl.classList.add('hidden');
+        }
+        if (!isWwts && wordGameHeaderEl) {
+          wordGameHeaderEl.classList.remove('hidden');
+        }
         if (cateMarkPanelEl) {
           cateMarkPanelEl.classList.toggle('hidden', !isCateMarking);
         }
@@ -3017,11 +3108,74 @@
               !wordGamePromptEl.textContent
             );
           }
+        } else if (isWwts) {
+          if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
+          if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
+          if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
+          if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
+          if (cateMarkPanelEl) cateMarkPanelEl.classList.add('hidden');
+          if (catePlayHintEl) catePlayHintEl.classList.add('hidden');
+
+          if (wordGameHeaderEl) wordGameHeaderEl.classList.add('hidden');
+          wordGameLetterBlockEl.classList.add('hidden');
+          wordGameMetaEl.classList.add('hidden');
+          wordGameLetterInlineRowEl.classList.add('hidden');
+          turnHintEl.classList.add('hidden');
+          turnHintEl.textContent = '';
+
+          const guesserLabel =
+            payload.guesserLabel || (lang === 'ro' ? 'Ghicește' : 'Guesses');
+          const subjectLabel =
+            payload.subjectLabel || (lang === 'ro' ? 'Despre' : 'About');
+          const guesserName = payload.turnPlayerName || '—';
+          const subjectName = payload.subjectPlayerName || '—';
+          if (wwtsRolesEl) {
+            wwtsRolesEl.classList.remove('hidden');
+            if (wwtsGuesserLabelEl) {
+              wwtsGuesserLabelEl.textContent = `${guesserLabel}:`;
+            }
+            if (wwtsGuesserNameEl) wwtsGuesserNameEl.textContent = guesserName;
+            if (wwtsSubjectLabelEl) {
+              wwtsSubjectLabelEl.textContent = `${subjectLabel}:`;
+            }
+            if (wwtsSubjectNameEl) wwtsSubjectNameEl.textContent = subjectName;
+          }
+
+          wordGamePromptEl.classList.remove('statements');
+          wordGamePromptEl.style.fontSize = '';
+          wordGamePromptEl.style.maxHeight = '';
+
+          const isWwtsNext = phase === 'next_question';
+          if (isWwtsNext) {
+            // Match app: only next-question prompt + Da — no question text.
+            wordGamePromptEl.textContent = '';
+            wordGamePromptEl.classList.add('hidden');
+            wordGameKeepEl.classList.remove('hidden');
+            keepNoBtn.classList.add('hidden');
+            fazautoActionsEl.classList.add('single-action');
+            keepCategoryAskEl.textContent =
+              payload.keepCategoryAskLabel ||
+              (lang === 'ro' ? 'Trecem la următoarea?' : 'Next question?');
+            keepYesBtn.textContent =
+              payload.keepCategoryYesLabel ||
+              (lang === 'ro' ? 'Da' : 'Yes');
+          } else {
+            wordGamePromptEl.textContent = payload.questionLabel || '';
+            wordGamePromptEl.classList.toggle(
+              'hidden',
+              !wordGamePromptEl.textContent
+            );
+            wordGameKeepEl.classList.add('hidden');
+            keepNoBtn.classList.remove('hidden');
+            fazautoActionsEl.classList.remove('single-action');
+          }
         } else if (isNextQuestion) {
           if (clueRacePanelEl) clueRacePanelEl.classList.add('hidden');
           if (bananaPanelEl) bananaPanelEl.classList.add('hidden');
           if (drunkardPanelEl) drunkardPanelEl.classList.add('hidden');
           if (memoriaPanelEl) memoriaPanelEl.classList.add('hidden');
+          if (wwtsRolesEl) wwtsRolesEl.classList.add('hidden');
+          if (wordGameHeaderEl) wordGameHeaderEl.classList.remove('hidden');
           wordGameHeaderLabelEl.textContent = lang === 'ro' ? 'Întrebare' : 'Question';
           wordGameHeaderValueEl.textContent = '';
           wordGamePromptEl.classList.remove('statements');
@@ -3304,14 +3458,12 @@
         pickGameTitleEl.textContent = payload.hubTitle || 'Car Games';
         pickGameBackBtn.textContent = payload.backToResultsLabel || 'Back to results';
 
-        p1WinEl.classList.toggle(
-          'hidden',
-          !isResults || isCoop || payload.winner !== 'p1'
-        );
-        p2WinEl.classList.toggle(
-          'hidden',
-          !isResults || isCoop || payload.winner !== 'p2'
-        );
+        const p1Won = isResults && !isCoop && payload.winner === 'p1';
+        const p2Won = isResults && !isCoop && payload.winner === 'p2';
+        p1WinEl.classList.toggle('hidden', !p1Won);
+        p2WinEl.classList.toggle('hidden', !p2Won);
+        p1WinEl.closest('.win-badge-slot')?.classList.toggle('has-winner', p1Won);
+        p2WinEl.closest('.win-badge-slot')?.classList.toggle('has-winner', p2Won);
 
         scoreRowEl.classList.toggle('results-mode', isResults);
         scoreRowEl.classList.toggle('coop-mode', isCoop);
