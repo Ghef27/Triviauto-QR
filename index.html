@@ -363,14 +363,6 @@
       }
 
       .score-name {
-        font-size: 16px;
-        font-weight: 800;
-        color: var(--text);
-        text-align: center;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
         flex-shrink: 1;
         min-width: 0;
       }
@@ -799,6 +791,9 @@
         background: var(--surface);
         border-radius: 14px;
         box-shadow: var(--shadow);
+        position: sticky;
+        bottom: 8px;
+        z-index: 30;
       }
 
       .control-row {
@@ -956,8 +951,11 @@
         width: min(46%, 210px);
         aspect-ratio: 790 / 172;
         background: url('./assets/ribbon-banner-red.png') center / 100% 100% no-repeat;
-        display: grid;
-        place-items: center;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 18%;
+        box-sizing: border-box;
         z-index: 2;
       }
 
@@ -965,11 +963,18 @@
         color: #fff;
         font-size: 15px;
         font-weight: 900;
+        line-height: 1;
+        transform: translateY(-2px);
         text-shadow:
           -1px -1px 0 #000,
+          0 -1px 0 #000,
           1px -1px 0 #000,
+          -1px 0 0 #000,
+          1px 0 0 #000,
           -1px 1px 0 #000,
-          1px 1px 0 #000;
+          0 1px 0 #000,
+          1px 1px 0 #000,
+          0 2px 2px rgba(0, 0, 0, 0.45);
       }
 
       .pick-player-slot {
@@ -1013,15 +1018,31 @@
         z-index: 2;
       }
 
-      .pick-player-name {
+      .pick-player-name,
+      .score-name {
         font-size: 13px;
-        font-weight: 800;
-        color: var(--text);
+        font-weight: 900;
+        color: #ffffff;
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         text-align: center;
+        text-shadow:
+          -1px -1px 0 #000,
+          0 -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 0 0 #000,
+          1px 0 0 #000,
+          -1px 1px 0 #000,
+          0 1px 0 #000,
+          1px 1px 0 #000,
+          0 2px 2px rgba(0, 0, 0, 0.45);
+      }
+
+      .score-name {
+        font-size: 16px;
+        font-weight: 900;
       }
 
       .avatar-picker-overlay {
@@ -1357,9 +1378,10 @@
 
       .clue-buzz-row {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+        gap: 6px;
         width: 100%;
+        max-width: 100%;
         align-items: center;
       }
 
@@ -1368,10 +1390,10 @@
         border: none;
         border-radius: 0;
         width: 100%;
-        aspect-ratio: 1347 / 358;
-        min-height: 44px;
+        min-width: 0;
+        height: 42px;
         padding: 0;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
         color: #2f1608;
         cursor: pointer;
@@ -1384,14 +1406,15 @@
       }
 
       .clue-buzz-btn span {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 80%;
-        height: 54%;
+        display: block;
+        width: 86%;
+        max-width: 100%;
         padding: 0 2px;
-        line-height: 1.15;
+        line-height: 1.1;
         text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .clue-buzz-btn:disabled {
@@ -1589,16 +1612,32 @@
         color: #2f1608;
       }
 
-      .banana-card-value.blurred {
-        filter: blur(22px);
+      .banana-card-value.smeared {
         user-select: none;
-        opacity: 0.95;
-        transform: scale(1.25);
+        min-height: 2.6em;
       }
 
-      .banana-panel.prep-mode .banana-card.word-card .banana-card-value.blurred {
-        filter: blur(22px);
-        transform: scale(1.25);
+      .banana-smear-stack {
+        display: block;
+        position: relative;
+        width: 100%;
+        min-height: 2.6em;
+      }
+
+      .banana-smear-glyph {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        margin-top: -0.6em;
+        text-align: center;
+        font: inherit;
+        font-weight: inherit;
+        color: inherit;
+        line-height: 1.2;
+        word-break: break-word;
+        padding: 0 18px;
+        pointer-events: none;
       }
 
       .banana-panel.prep-mode .banana-card-hint {
@@ -1697,6 +1736,14 @@
         min-height: 56px;
         font-size: 22px;
         background: transparent url('./assets/difficulty_medium.png') center / 100% 100% no-repeat;
+        box-shadow: none;
+        border-radius: 0;
+      }
+
+      .fazauto-btn.hard-cta {
+        min-height: 56px;
+        font-size: 22px;
+        background: transparent url('./assets/difficulty_hard.png') center / 100% 100% no-repeat;
         box-shadow: none;
         border-radius: 0;
       }
@@ -1898,17 +1945,17 @@
               <div id="banana-prep-ask" class="banana-prep-ask hidden"></div>
               <button id="banana-word-card" class="banana-card word-card" type="button">
                 <div id="banana-word-label" class="banana-card-label">Word</div>
-                <div id="banana-word-value" class="banana-card-value blurred">••••</div>
+                <div id="banana-word-value" class="banana-card-value smeared"></div>
                 <div id="banana-word-hint" class="banana-card-hint">Hold to reveal</div>
               </button>
               <button id="banana-category-card" class="banana-card" type="button">
                 <div id="banana-category-label" class="banana-card-label">Category</div>
-                <div id="banana-category-value" class="banana-card-value blurred">••••</div>
+                <div id="banana-category-value" class="banana-card-value smeared"></div>
                 <div id="banana-category-hint" class="banana-card-hint">Tap to reveal</div>
               </button>
               <button id="banana-hint-card" class="banana-card" type="button">
                 <div id="banana-hint-label" class="banana-card-label">Hint</div>
-                <div id="banana-hint-value" class="banana-card-value blurred">••••</div>
+                <div id="banana-hint-value" class="banana-card-value smeared"></div>
                 <div id="banana-hint-hint" class="banana-card-hint">Tap to reveal</div>
               </button>
               <div id="banana-questions-row" class="banana-questions-row hidden">
@@ -1918,8 +1965,8 @@
                 </button>
               </div>
               <div id="banana-play-actions" class="banana-play-actions hidden">
-                <button id="banana-guessed-btn" class="fazauto-btn ok" type="button">Guessed!</button>
-                <button id="banana-missed-btn" class="fazauto-btn foul" type="button">Give up</button>
+                <button id="banana-guessed-btn" class="fazauto-btn medium-cta" type="button">Guessed!</button>
+                <button id="banana-missed-btn" class="fazauto-btn hard-cta" type="button">Give up</button>
               </div>
               <div id="banana-proceed" class="banana-proceed hidden">
                 <div id="banana-proceed-ask" class="banana-proceed-ask"></div>
@@ -2242,6 +2289,7 @@
       const bananaWordValueEl = document.getElementById('banana-word-value');
       const bananaWordHintEl = document.getElementById('banana-word-hint');
       let bananaWordPeeking = false;
+      let lastBananaAnswer = '—';
       const bananaCategoryCardEl = document.getElementById('banana-category-card');
       const bananaCategoryLabelEl = document.getElementById('banana-category-label');
       const bananaCategoryValueEl = document.getElementById('banana-category-value');
@@ -2250,6 +2298,69 @@
       const bananaHintLabelEl = document.getElementById('banana-hint-label');
       const bananaHintValueEl = document.getElementById('banana-hint-value');
       const bananaHintHintEl = document.getElementById('banana-hint-hint');
+      // Mirrors App.js BananaSmearedWord offsets (x, y, opacity).
+      const BANANA_WORD_SMEAR = [
+        [0, 0, 0.1],
+        [-3, 0, 0.09],
+        [3, 0, 0.09],
+        [0, -3, 0.09],
+        [0, 3, 0.09],
+        [-5, -3, 0.08],
+        [5, -3, 0.08],
+        [-5, 3, 0.08],
+        [5, 3, 0.08],
+        [-7, 0, 0.07],
+        [7, 0, 0.07],
+        [0, -7, 0.07],
+        [0, 7, 0.07],
+        [-6, -6, 0.06],
+        [6, -6, 0.06],
+        [-6, 6, 0.06],
+        [6, 6, 0.06],
+        [-10, -2, 0.05],
+        [10, -2, 0.05],
+        [-10, 2, 0.05],
+        [10, 2, 0.05],
+        [-2, -10, 0.05],
+        [2, -10, 0.05],
+        [-2, 10, 0.05],
+        [2, 10, 0.05],
+        [-9, -7, 0.04],
+        [9, -7, 0.04],
+        [-9, 7, 0.04],
+        [9, 7, 0.04],
+        [-12, 0, 0.035],
+        [12, 0, 0.035],
+        [0, -11, 0.035],
+        [0, 11, 0.035],
+        [-8, -9, 0.03],
+        [8, -9, 0.03],
+        [-8, 9, 0.03],
+        [8, 9, 0.03],
+      ];
+      const renderBananaCardValue = (el, text, smeared) => {
+        if (!el) return;
+        const word = text || '—';
+        if (!smeared) {
+          el.classList.remove('smeared');
+          el.textContent = word;
+          return;
+        }
+        el.classList.add('smeared');
+        el.replaceChildren();
+        const stack = document.createElement('span');
+        stack.className = 'banana-smear-stack';
+        stack.setAttribute('aria-hidden', 'true');
+        for (const [x, y, opacity] of BANANA_WORD_SMEAR) {
+          const glyph = document.createElement('span');
+          glyph.className = 'banana-smear-glyph';
+          glyph.style.opacity = String(opacity);
+          glyph.style.transform = `translate(${x}px, ${y}px)`;
+          glyph.textContent = word;
+          stack.appendChild(glyph);
+        }
+        el.appendChild(stack);
+      };
       const bananaGuessedBtn = document.getElementById('banana-guessed-btn');
       const bananaMissedBtn = document.getElementById('banana-missed-btn');
       const bananaPlayActionsEl = document.getElementById('banana-play-actions');
@@ -2815,18 +2926,29 @@
               : '';
             const points =
               payload.cluePoints > 0 ? ` · ${payload.cluePoints} ${pointsLabel}` : '';
-            clueRaceMetaEl.textContent = `${clueLabel} ${payload.clueIndex || 1}${sudden}${points}`;
-            // Never show the secret answer on the remote during play.
-            clueRaceClueEl.textContent =
-              isClueTyping || phase === 'result' || phase === 'reveal'
-                ? ''
-                : payload.clueText || '';
+            const showClueAnswer =
+              Boolean(payload.clueShowAnswer) && Boolean(payload.clueAnswer);
+            if (showClueAnswer) {
+              clueRaceMetaEl.textContent =
+                payload.answerLabel || (lang === 'ro' ? 'Răspuns:' : 'Answer:');
+              clueRaceClueEl.textContent = payload.clueAnswer || '';
+            } else {
+              clueRaceMetaEl.textContent = `${clueLabel} ${
+                payload.clueIndex || 1
+              }${sudden}${points}`;
+              // Keep the secret answer hidden until the host reveals it.
+              clueRaceClueEl.textContent =
+                isClueTyping || phase === 'result' || phase === 'reveal'
+                  ? ''
+                  : payload.clueText || '';
+            }
             clueRaceClueEl.classList.toggle('hidden', !clueRaceClueEl.textContent);
 
             const allowed = Array.isArray(payload.clueAllowedBuzz)
               ? payload.clueAllowedBuzz
               : ['p1', 'p2', 'both'];
-            const canBuzz = Boolean(payload.canBuzz) && isClueWindow;
+            const canBuzz =
+              Boolean(payload.canBuzz) && isClueWindow && !showClueAnswer;
             clueBuzzRowEl.classList.toggle('hidden', !canBuzz);
             const setBuzzLabel = (btn, text) => {
               if (!btn) return;
@@ -2928,15 +3050,18 @@
           bananaHintLabelEl.textContent =
             payload.bananaHintLabel || (lang === 'ro' ? 'Indiciu' : 'Hint');
 
-          bananaWordValueEl.textContent = payload.bananaAnswer || '••••';
-          bananaCategoryValueEl.textContent = payload.bananaCategory || '••••';
-          bananaHintValueEl.textContent = payload.bananaHint || '••••';
-          bananaWordValueEl.classList.toggle(
-            'blurred',
-            isPrep ? !bananaWordPeeking : !wordRevealed
+          const wordText = payload.bananaAnswer || '—';
+          lastBananaAnswer = wordText;
+          const categoryText = payload.bananaCategory || '—';
+          const hintText = payload.bananaHint || '—';
+          const wordSmeared = isPrep ? !bananaWordPeeking : !wordRevealed;
+          renderBananaCardValue(bananaWordValueEl, wordText, wordSmeared);
+          renderBananaCardValue(
+            bananaCategoryValueEl,
+            categoryText,
+            !categoryRevealed
           );
-          bananaCategoryValueEl.classList.toggle('blurred', !categoryRevealed);
-          bananaHintValueEl.classList.toggle('blurred', !hintRevealed);
+          renderBananaCardValue(bananaHintValueEl, hintText, !hintRevealed);
 
           bananaWordHintEl.textContent =
             payload.bananaHoldRevealLabel ||
@@ -3831,7 +3956,9 @@
             isResults ||
               isPickGame ||
               isWwts ||
-              (isFactOrFiction && payload.fazautoPhase !== 'playing') ||
+              (isFactOrFiction &&
+                payload.fazautoPhase !== 'announce' &&
+                payload.fazautoPhase !== 'playing') ||
               (isBeep &&
                 payload.fazautoPhase !== 'listening' &&
                 payload.fazautoPhase !== 'beep' &&
@@ -4038,10 +4165,10 @@
           bananaWordPeeking = peeking;
           el.classList.toggle('peeking', peeking);
           if (el.classList.contains('revealed')) {
-            bananaWordValueEl.classList.remove('blurred');
+            renderBananaCardValue(bananaWordValueEl, lastBananaAnswer, false);
             return;
           }
-          bananaWordValueEl.classList.toggle('blurred', !peeking);
+          renderBananaCardValue(bananaWordValueEl, lastBananaAnswer, !peeking);
         };
         const start = (e) => {
           if (isPrepMode()) {
