@@ -3956,7 +3956,11 @@
       };
 
       const applyRemoteState = (payload = {}) => {
-        const isPickGame = payload.screen === 'pick_game';
+        // Hub/setup from the host with a live session should look like the picker.
+        const isPickGame =
+          payload.screen === 'pick_game' ||
+          payload.screen === 'hub' ||
+          payload.screen === 'setup';
         const isResults =
           !isPickGame && (payload.screen === 'results' || Boolean(payload.canPlayAgain));
         const isFazAuto = payload.gameId === 'last-letter';
