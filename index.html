@@ -31,6 +31,9 @@
       body {
         margin: 0;
         min-height: 100vh;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
         color: var(--text);
         background-color: var(--bg);
         background-image: url('./assets/game_background1.png');
@@ -42,6 +45,10 @@
 
       .page {
         min-height: 100vh;
+        min-height: 100dvh;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -106,7 +113,9 @@
         justify-content: center;
         gap: 16px;
         padding: 8px 16px 28px;
+        padding-bottom: max(28px, env(safe-area-inset-bottom, 0px));
         min-height: 0;
+        overflow: hidden;
       }
 
       .page.pick-game-mode .app-main {
@@ -143,6 +152,7 @@
         background: var(--surface);
         border-radius: 12px;
         box-shadow: var(--shadow);
+        flex-shrink: 0;
       }
 
       .status-label {
@@ -171,6 +181,7 @@
         display: grid;
         gap: 4px;
         padding: 8px 8px 0;
+        flex-shrink: 0;
       }
 
       .results-title {
@@ -201,6 +212,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
+        flex-shrink: 0;
       }
 
       .score-row.coop-mode {
@@ -620,6 +632,13 @@
         background: var(--surface);
         border-radius: 14px;
         box-shadow: var(--shadow);
+        flex: 1 1 auto;
+        min-height: 0;
+        align-content: start;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
       }
 
       .round-label {
@@ -910,9 +929,7 @@
         background: var(--surface);
         border-radius: 14px;
         box-shadow: var(--shadow);
-        position: sticky;
-        bottom: 8px;
-        z-index: 30;
+        flex-shrink: 0;
       }
 
       .control-row {
@@ -970,6 +987,7 @@
         align-items: center;
         gap: 12px;
         padding-top: 4px;
+        flex-shrink: 0;
       }
 
       .play-again-btn,
